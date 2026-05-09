@@ -7,62 +7,68 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8645667047:AAGHw3-Ig_F830J-
 
 const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
 
-// Metodo 1: Bot API por @username o link de invitacion
-async function getPhotoByChat(chatId: string): Promise<string | null> {
+export async function getPhotoForGroup(group: { name: string; link?: string; username?: string }): Promise<{ photoUrl: string; username?: string } | null> {
+  // Intentar todos los metodos en paralelo y tomar el primero que responda
+  const attempts: Promise<{ photoUrl: string; username?: string } | null>[] = []
+
+  // Metodo 1: username directo
+  if (group.username) {
+    attempts.push(tryBotApi(`@${group.username}`, group.username))
+  }
+
+  // Metodo 2: extraer del link
+  if (group.link && group.link !== '#') {
+    if (group.link.includes('/+') || group.link.includes('joinchat')) {
+      // Privado — scraping del preview
+      attempts.push(tryScraping(group.link))
+    } else {
+      const u = group.link.replace('https://t.me/','').replace('http://t.me/','').replace('@','').split('/')[0].trim()
+      if (u) {
+        attempts.push(tryBotApi(`@${u}`, u))
+        attempts.push(tryScraping(`https://t.me/${u}`))
+      }
+    }
+  }
+
+  // Metodo 3: scraping por nombre en t.me
+  attempts.push(tryScraping(`https://t.me/${group.name.toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9]/g,'')}`))
+
+  // Correr todos en paralelo, tomar el primero exitoso
+  const results = await Promise.allSettled(attempts)
+  for (const r of results) {
+    if (r.status === 'fulfilled' && r.value?.photoUrl) return r.value
+  }
+  return null
+}
+
+async function tryBotApi(chatId: string, username?: string): Promise<{ photoUrl: string; username?: string } | null> {
   try {
-    const encoded = chatId.startsWith('http') ? encodeURIComponent(chatId) : chatId
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=${encoded}`)
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=${chatId}`)
     const data = await res.json()
     if (!data.ok || !data.result.photo) return null
     const fRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${data.result.photo.big_file_id}`)
     const fData = await fRes.json()
     if (!fData.ok) return null
-    return `https://api.telegram.org/file/bot${BOT_TOKEN}/${fData.result.file_path}`
+    return { photoUrl: `https://api.telegram.org/file/bot${BOT_TOKEN}/${fData.result.file_path}`, username }
   } catch { return null }
 }
 
-// Metodo 2: Scraping og:image de t.me (funciona para publicos y privados)
-async function getPhotoByScraing(url: string): Promise<string | null> {
+async function tryScraping(url: string): Promise<{ photoUrl: string } | null> {
   try {
-    const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' }
-    })
+    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)' } })
     const html = await res.text()
     const m = html.match(/<meta property="og:image" content="([^"]+)"/)
-    return m?.[1] || null
-  } catch { return null }
-}
-
-// Metodo 3: Buscar el grupo por nombre en la API de Telegram
-async function getPhotoByName(name: string): Promise<{ photoUrl: string; username: string } | null> {
-  try {
-    // Convertir nombre a posible username: "Free Fire LATAM" -> "freefilelatam"
-    const possibleUsernames = [
-      name.toLowerCase().replace(/[^a-z0-9]/g, ''),
-      name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, ''),
-      name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, ''),
-      name.toLowerCase().split(' ').join(''),
-      name.toLowerCase().split(' ').slice(0, 3).join(''),
-    ]
-
-    for (const username of [...new Set(possibleUsernames)]) {
-      if (username.length < 3) continue
-      const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=@${username}`)
-      const data = await res.json()
-      if (data.ok && data.result.photo) {
-        const fRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${data.result.photo.big_file_id}`)
-        const fData = await fRes.json()
-        if (fData.ok) {
-          return {
-            photoUrl: `https://api.telegram.org/file/bot${BOT_TOKEN}/${fData.result.file_path}`,
-            username
-          }
-        }
-      }
-      await new Promise(r => setTimeout(r, 150))
-    }
+    if (m?.[1]) return { photoUrl: m[1] }
   } catch {}
   return null
+}
+
+async function updateGroupPhoto(id: string, photoUrl: string, username?: string) {
+  return fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: h,
+    body: JSON.stringify({ photo_url: photoUrl, ...(username ? { username } : {}) })
+  })
 }
 
 export async function POST(req: NextRequest) {
@@ -70,66 +76,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
+  // Obtener grupos sin foto en lotes de 100
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/groups?photo_url=is.null&select=id,name,link,username&limit=50`,
+    `${SUPABASE_URL}/rest/v1/groups?photo_url=is.null&select=id,name,link,username&limit=100`,
     { headers: h }
   )
   const groups = await res.json()
-  if (!Array.isArray(groups)) return NextResponse.json({ error: 'Error obteniendo grupos' }, { status: 500 })
+  if (!Array.isArray(groups)) return NextResponse.json({ error: 'Error' }, { status: 500 })
 
+  // Procesar en grupos de 10 en paralelo
   let updated = 0, failed = 0
+  const BATCH = 10
 
-  for (const group of groups) {
-    let photoUrl: string | null = null
-    let username: string | null = group.username || null
-
-    // Metodo 1: username conocido
-    if (username) {
-      photoUrl = await getPhotoByChat(`@${username}`)
-    }
-
-    // Metodo 2: extraer username del link
-    if (!photoUrl && group.link && group.link !== '#') {
-      if (group.link.includes('/+') || group.link.includes('joinchat')) {
-        // Grupo privado — scraping del preview
-        photoUrl = await getPhotoByScraing(group.link)
-      } else {
-        const u = group.link
-          .replace('https://t.me/', '').replace('http://t.me/', '')
-          .replace('@', '').split('/')[0].trim()
-        if (u) {
-          username = u
-          photoUrl = await getPhotoByChat(`@${u}`)
-          // Fallback scraping
-          if (!photoUrl) photoUrl = await getPhotoByScraing(`https://t.me/${u}`)
-        }
-      }
-    }
-
-    // Metodo 3: buscar por nombre (para grupos sin link)
-    if (!photoUrl) {
-      const result = await getPhotoByName(group.name)
-      if (result) {
-        photoUrl = result.photoUrl
-        username = result.username
-      }
-    }
-
-    if (!photoUrl) { failed++; continue }
-
-    const upd = await fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${group.id}`, {
-      method: 'PATCH',
-      headers: h,
-      body: JSON.stringify({
-        photo_url: photoUrl,
-        ...(username ? { username } : {})
-      })
-    })
-
-    if (upd.ok) updated++
-    else failed++
-
-    await new Promise(r => setTimeout(r, 400))
+  for (let i = 0; i < groups.length; i += BATCH) {
+    const batch = groups.slice(i, i + BATCH)
+    await Promise.all(batch.map(async (group: any) => {
+      const result = await getPhotoForGroup(group)
+      if (!result) { failed++; return }
+      const upd = await updateGroupPhoto(group.id, result.photoUrl, result.username)
+      if (upd.ok) updated++
+      else failed++
+    }))
+    // Pausa entre lotes para no saturar la API
+    if (i + BATCH < groups.length) await new Promise(r => setTimeout(r, 1000))
   }
 
   return NextResponse.json({
