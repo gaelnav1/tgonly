@@ -28,6 +28,7 @@ export default function AdminPage() {
   const [pending, setPending]       = useState<PendingGroup[]>([])
   const [pendingCats, setPendingCats] = useState<PendingCat[]>([])
   const [syncing, setSyncing]       = useState(false)
+  const [fetchingPhoto, setFetchingPhoto] = useState<string|null>(null)
   const [syncLog, setSyncLog]       = useState<SyncEntry[]>([])
   const [showLog, setShowLog]       = useState(false)
 
