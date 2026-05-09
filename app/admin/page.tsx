@@ -298,6 +298,14 @@ export default function AdminPage() {
                         <div style={{display:'flex',gap:8,marginTop:12,paddingTop:12,borderTop:'1px solid rgba(255,255,255,0.06)',flexWrap:'wrap'}}>
                           <button onClick={()=>startEdit(g)} style={btnBlue}>✏️ Editar</button>
                           <a href={g.link} target="_blank" rel="noopener noreferrer" style={{...btnGray,textDecoration:'none'}}>🔗 Telegram</a>
+                          {!g.photo_url && (
+                            <button
+                              onClick={()=>fetchOnePhoto(g.id, g.name, g.link||'')}
+                              disabled={fetchingPhoto===g.id}
+                              style={{...btnGray, color:'#2AABEE', borderColor:'rgba(42,171,238,0.3)', opacity:fetchingPhoto===g.id?0.5:1}}>
+                              {fetchingPhoto===g.id ? '⏳ Buscando...' : '📸 Obtener foto'}
+                            </button>
+                          )}
                           <button onClick={()=>deleteGroup(g.id,g.name)} style={{...btnRed,marginLeft:'auto'}}>🗑 Eliminar</button>
                         </div>
                       </div>
