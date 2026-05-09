@@ -62,6 +62,25 @@ export default function AdminPage() {
     setGroupsLoading(false)
   }, [filterCat,filterSearch,password])
 
+  async function fetchOnePhoto(id: string, name: string, link: string) {
+    setFetchingPhoto(id)
+    try {
+      const res = await fetch('/api/admin/sync-photos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ single: true, id, name, link })
+      })
+      const d = await res.json()
+      if (d.log?.[0]?.photo) {
+        notify(`✅ ${name} — foto obtenida`)
+        fetchGroups()
+      } else {
+        notify(`❌ ${name} — ${d.log?.[0]?.method || 'sin foto disponible'}`, false)
+      }
+    } catch { notify('Error', false) }
+    finally { setFetchingPhoto(null) }
+  }
+
   async function syncPhotos() {
     setSyncing(true); setSyncLog([]); setShowLog(false)
     try {

@@ -11,6 +11,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
+  const body = await req.json().catch(() => ({}))
+
+  // Modo individual — obtener foto de un solo grupo
+  if (body.single && body.id) {
+    const group = { id: body.id, name: body.name, link: body.link, username: body.username }
+    const result = await getPhotoForGroup(group)
+    if (!result) {
+      return NextResponse.json({ ok: false, log: [{ name: body.name, link: body.link, status: '❌ sin foto', method: 'todos los metodos fallaron', photo: '' }] })
+    }
+    await fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${body.id}`, {
+      method: 'PATCH', headers: h,
+      body: JSON.stringify({ photo_url: result.photoUrl, ...(result.username ? { username: result.username } : {}) })
+    })
+    return NextResponse.json({ ok: true, log: [{ name: body.name, link: body.link, status: '✅ foto guardada', method: result.method, photo: result.photoUrl }] })
+  }
+
   const res = await fetch(
     `${SUPABASE_URL}/rest/v1/groups?photo_url=is.null&select=id,name,link,username&limit=100`,
     { headers: h }
