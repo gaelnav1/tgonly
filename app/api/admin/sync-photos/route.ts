@@ -16,24 +16,52 @@ export async function POST(req: NextRequest) {
     { headers: h }
   )
   const groups = await res.json()
-  if (!Array.isArray(groups)) return NextResponse.json({ error: 'Error' }, { status: 500 })
+  if (!Array.isArray(groups)) return NextResponse.json({ error: 'Error obteniendo grupos' }, { status: 500 })
 
-  let updated = 0, failed = 0
-  const BATCH = 10
+  const log: { name: string; link: string; status: string; method: string; photo: string }[] = []
 
+  const BATCH = 5
   for (let i = 0; i < groups.length; i += BATCH) {
     const batch = groups.slice(i, i + BATCH)
     await Promise.all(batch.map(async (group: any) => {
       const result = await getPhotoForGroup(group)
-      if (!result) { failed++; return }
+
+      if (!result) {
+        log.push({
+          name: group.name,
+          link: group.link || '#',
+          status: '❌ sin foto',
+          method: group.link && group.link !== '#' ? 'intentado: bot_api + scraping' : 'sin link — no se puede intentar',
+          photo: ''
+        })
+        return
+      }
+
       const upd = await fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${group.id}`, {
         method: 'PATCH', headers: h,
         body: JSON.stringify({ photo_url: result.photoUrl, ...(result.username ? { username: result.username } : {}) })
       })
-      if (upd.ok) updated++; else failed++
+
+      log.push({
+        name: group.name,
+        link: group.link || '#',
+        status: upd.ok ? '✅ foto guardada' : '⚠️ error guardando',
+        method: result.method,
+        photo: result.photoUrl
+      })
     }))
-    if (i + BATCH < groups.length) await new Promise(r => setTimeout(r, 1000))
+    if (i + BATCH < groups.length) await new Promise(r => setTimeout(r, 800))
   }
 
-  return NextResponse.json({ ok: true, message: `${updated} fotos obtenidas, ${failed} sin foto`, updated, failed, total: groups.length })
+  const updated = log.filter(l => l.status.includes('✅')).length
+  const failed  = log.filter(l => l.status.includes('❌')).length
+  const errors  = log.filter(l => l.status.includes('⚠️')).length
+
+  return NextResponse.json({
+    ok: true,
+    message: `${updated} fotos obtenidas · ${failed} sin foto · ${errors} errores`,
+    updated, failed, errors,
+    total: groups.length,
+    log  // log completo por grupo
+  })
 }

@@ -156,6 +156,33 @@ export default function AdminPage() {
             {(filterCat||filterSearch)&&<button onClick={()=>{setFilterCat('');setFilterSearch('')}} style={btnGray}>Limpiar</button>}
           </div>
 
+          {/* Log de sincronizacion */}
+          {showLog && syncLog.length > 0 && (
+            <div style={{background:'#0d0d14',border:'1px solid rgba(255,255,255,0.07)',borderRadius:12,padding:16,marginBottom:20}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+                <span style={{fontFamily:syne,fontWeight:700,fontSize:14,color:'#f0eff8'}}>📋 Log de sincronizacion ({syncLog.length} grupos)</span>
+                <button onClick={()=>setShowLog(false)} style={btnGray}>Cerrar</button>
+              </div>
+              <div style={{maxHeight:400,overflowY:'auto',display:'flex',flexDirection:'column',gap:6}}>
+                {syncLog.map((l,i)=>(
+                  <div key={i} style={{display:'flex',gap:12,alignItems:'flex-start',padding:'8px 12px',background:'rgba(255,255,255,0.03)',borderRadius:8,fontSize:12}}>
+                    {l.photo && <img src={`/api/photo?url=${encodeURIComponent(l.photo)}`} alt={l.name} style={{width:32,height:32,borderRadius:8,objectFit:'cover',flexShrink:0}} />}
+                    {!l.photo && <div style={{width:32,height:32,borderRadius:8,background:'rgba(255,255,255,0.05)',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16}}>📱</div>}
+                    <div style={{flex:1,minWidth:0}}>
+                      <p style={{color:'#f0eff8',fontWeight:600,marginBottom:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{l.name}</p>
+                      <p style={{color:'#8888aa',marginBottom:2}}>{l.status} · {l.method}</p>
+                      {l.link && l.link !== '#' && <a href={l.link} target="_blank" rel="noopener noreferrer" style={{color:'#2AABEE',textDecoration:'none'}}>{l.link.slice(0,40)}...</a>}
+                      {l.link === '#' && <span style={{color:'#ff5f6d'}}>⚠️ Sin link de Telegram</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+
+          </div>
+
           {groupsLoading?<div style={{textAlign:'center',padding:'40px 0',color:'#8888aa'}}>Cargando...</div>:groups.length===0?<div style={{textAlign:'center',padding:'60px 0',color:'#8888aa'}}><p style={{fontSize:40,marginBottom:12}}>🔍</p><p>No se encontraron grupos</p></div>:
             groups.map(g=>(
               <div key={g.id} style={card}>
