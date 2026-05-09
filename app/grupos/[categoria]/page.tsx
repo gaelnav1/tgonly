@@ -7,10 +7,7 @@ import GroupCard from '@/components/GroupCard'
 import Navbar from '@/components/Navbar'
 
 export const revalidate = 60
-
-export async function generateStaticParams() {
-  return staticCategories.map(cat => ({ categoria: cat.slug }))
-}
+export const dynamicParams = true
 
 const CATEGORY_SEO: Record<string, { title: string; description: string; keywords: string }> = {
   fans: {
@@ -22,22 +19,32 @@ const CATEGORY_SEO: Record<string, { title: string; description: string; keyword
 
 export async function generateMetadata({ params }: { params: { categoria: string } }): Promise<Metadata> {
   const cat = staticCategories.find(c => c.slug === params.categoria)
-  if (!cat) return {}
   const seo = CATEGORY_SEO[params.categoria]
+  const catName = cat?.name || params.categoria.replace(/-/g, ' ')
   return {
-    title: seo?.title || `Grupos de Telegram de ${cat.name} en Espanol 2025 | TGOnly`,
-    description: seo?.description || `Descubre los mejores grupos de Telegram de ${cat.name} en espanol. Comunidades verificadas para LATAM.`,
+    title: seo?.title || `Grupos de Telegram de ${catName} en Espanol 2025 | TGOnly`,
+    description: seo?.description || `Descubre los mejores grupos de Telegram de ${catName} en espanol. Comunidades verificadas para LATAM.`,
     keywords: seo?.keywords,
-    alternates: { canonical: `https://telegramonly.com/grupos/${cat.slug}` },
+    alternates: { canonical: `https://telegramonly.com/grupos/${params.categoria}` },
   }
 }
 
 export default async function CategoryPage({ params }: { params: { categoria: string } }) {
-  const cat = staticCategories.find(c => c.slug === params.categoria)
-  if (!cat) notFound()
-
   const allGroups = await getAllGroups()
-  const catGroups = allGroups.filter(g => g.category === cat.slug)
+  const catGroups = allGroups.filter(g => g.category === params.categoria)
+
+  // Buscar categoria en estaticas o construirla desde los grupos
+  let cat = staticCategories.find(c => c.slug === params.categoria)
+  if (!cat) {
+    if (catGroups.length === 0) notFound()
+    // Construir categoria desde los grupos de Supabase
+    cat = {
+      emoji: catGroups[0]?.emoji || '📁',
+      name: params.categoria.replace(/-/g, ' ').replace(/\w/g, l => l.toUpperCase()),
+      count: String(catGroups.length),
+      slug: params.categoria,
+    }
+  }
   const trendingInCat = catGroups.filter(g => g.trending)
   const related = staticCategories.filter(c => c.slug !== cat.slug).slice(0, 6)
 
