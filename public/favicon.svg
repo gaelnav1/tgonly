@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="22" fill="#0a0a0f"/>
+  <rect x="1.5" y="1.5" width="97" height="97" rx="21" fill="none" stroke="#2AABEE" stroke-width="1.5" opacity="0.6"/>
+  <text x="50" y="78" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900" font-size="72" fill="#ffffff">T</text>
+  <circle cx="82" cy="18" r="14" fill="#2AABEE"/>
+  <circle cx="82" cy="18" r="8" fill="#7DD3FC"/>
+</svg>
