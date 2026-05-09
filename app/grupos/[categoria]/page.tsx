@@ -78,6 +78,35 @@ export default async function CategoryPage({ params }: { params: { categoria: st
           </div>
         )}
 
+
+        {/* Bloque SEO editorial por categoria */}
+        {(() => {
+          const seoData: Record<string, { title: string; p1: string; p2: string; pills: string[] }> = {
+            fans:           { title: 'Grupos de Telegram <span style={{color:"#2AABEE"}}>OnlyFans</span> en Espanol', p1: 'TGOnly es el directorio mas completo de grupos de Telegram OnlyFans en espanol. Encuentra canales de contenido exclusivo de influencers y creadores de LATAM, Mexico, Colombia, Argentina y toda America Latina.', p2: 'Nuestros canales de Telegram Only Fans incluyen contenido de las creadoras mas populares de habla hispana. Todos los grupos son verificados y activos.', pills: ['🔥 Telegram OnlyFans gratis','💎 Canales exclusivos LATAM','✓ Grupos verificados','📱 Actualizados diario'] },
+            cripto:         { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Cripto</span> en Espanol', p1: 'Descubre los mejores grupos de Telegram de criptomonedas en espanol. Senales de trading, analisis tecnico de Bitcoin, Ethereum y DeFi para toda LATAM.', p2: 'Nuestra seleccion de canales de cripto en Telegram incluye comunidades verificadas con traders profesionales y alertas de mercado en tiempo real.', pills: ['📈 Senales de trading','💰 Bitcoin y Altcoins','🌐 DeFi y Web3','✓ Traders verificados'] },
+            gaming:         { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Gaming</span> en Espanol', p1: 'Los mejores grupos de gaming en Telegram en espanol. Free Fire, Fortnite, Roblox, Minecraft y los juegos mas populares de LATAM en un solo lugar.', p2: 'Encuentra compañeros de juego, torneos, clanes y las ultimas noticias de videojuegos en nuestros grupos de Telegram para gamers.', pills: ['🎮 Free Fire LATAM','🏆 Torneos','🎯 Clanes activos','🕹️ Multi-plataforma'] },
+            tech:           { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Tecnologia</span> en Espanol', p1: 'Los mejores grupos de tecnologia en Telegram en espanol. Inteligencia artificial, programacion, startups y gadgets para LATAM.', p2: 'Desde grupos de ChatGPT y IA en Telegram hasta comunidades de desarrolladores — todo el mundo tech hispanohablante.', pills: ['🤖 Inteligencia Artificial','💻 Programacion','🚀 Startups LATAM','📱 Gadgets y tech'] },
+            noticias:       { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Noticias</span> en Espanol', p1: 'Mantente informado con los mejores grupos de noticias en Telegram en espanol. Informacion verificada de Mexico, Colombia, Argentina y LATAM en tiempo real.', p2: 'Nuestros canales de noticias en Telegram cubren politica, economia, deportes e internacional — todo verificado.', pills: ['🌎 LATAM en tiempo real','📰 Noticias verificadas','⚡ Actualizacion 24/7','🗺️ Cobertura regional'] },
+            deportes:       { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Deportes</span> en Espanol', p1: 'Los mejores grupos de deportes en Telegram en espanol. Futbol, NFL, NBA, boxeo y todos los deportes que mueven a LATAM con resultados en tiempo real.', p2: 'Encuentra canales de futbol en Telegram, grupos de apuestas deportivas y comunidades de fans de los equipos mas grandes de America Latina.', pills: ['⚽ Futbol LATAM','🏈 NFL y NBA','🥊 Boxeo y MMA','📊 Stats en vivo'] },
+            entretenimiento:{ title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Entretenimiento</span> en Espanol', p1: 'Descubre los mejores grupos de entretenimiento en Telegram en espanol. Series, peliculas, musica, memes y todo lo que te divierte para LATAM.', p2: 'Desde grupos de Netflix en Telegram hasta canales de musica y memes — el entretenimiento en espanol mas activo de la plataforma.', pills: ['🎬 Series y peliculas','🎵 Musica','😂 Memes LATAM','📺 Streaming'] },
+            negocios:       { title: 'Grupos de Telegram de <span style={{color:"#2AABEE"}}>Negocios</span> en Espanol', p1: 'Los mejores grupos de negocios en Telegram en espanol. Emprendimiento, marketing digital, ventas y finanzas para entrepreneurs de LATAM.', p2: 'Conecta con otros emprendedores en nuestros grupos de emprendimiento en Telegram — networking, mentoria y oportunidades en espanol.', pills: ['💼 Emprendimiento','📊 Marketing digital','💰 Finanzas','🤝 Networking LATAM'] },
+          }
+          const s = seoData[params.categoria]
+          if (!s) return null
+          return (
+            <div className="mb-12 bg-[#111118] border border-white/[0.07] rounded-2xl p-8">
+              <h2 className="font-syne font-bold text-[20px] mb-4" dangerouslySetInnerHTML={{__html: s.title}} />
+              <p className="text-[#8888aa] text-[14px] leading-relaxed mb-3">{s.p1}</p>
+              <p className="text-[#8888aa] text-[14px] leading-relaxed mb-6">{s.p2}</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {s.pills.map(pill => (
+                  <div key={pill} className="bg-[#1c1c27] border border-white/[0.07] rounded-xl p-3 text-[13px] text-[#8888aa]">{pill}</div>
+                ))}
+              </div>
+            </div>
+          )
+        })()}
+
         {trendingInCat.length > 0 && (
           <div className="mb-12">
             <h2 className="font-syne font-bold text-[22px] tracking-tight mb-6">🔥 Trending en {cat.name}</h2>
