@@ -180,7 +180,6 @@ export default function AdminPage() {
             </div>
           )}
 
-
           </div>
 
           {groupsLoading?<div style={{textAlign:'center',padding:'40px 0',color:'#8888aa'}}>Cargando...</div>:groups.length===0?<div style={{textAlign:'center',padding:'60px 0',color:'#8888aa'}}><p style={{fontSize:40,marginBottom:12}}>🔍</p><p>No se encontraron grupos</p></div>:
