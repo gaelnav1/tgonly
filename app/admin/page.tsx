@@ -74,6 +74,10 @@ export default function AdminPage() {
       const d = await res.json()
       if (d.log?.[0]?.photo) {
         notify(`✅ ${name} — foto obtenida`)
+        // Si estamos editando este grupo, actualizar el preview
+        if (editingId === id) {
+          setEditData(p => ({...p, photo_url: d.log[0].photo}))
+        }
         fetchGroups()
       } else {
         notify(`❌ ${name} — ${d.log?.[0]?.method || 'sin foto disponible'}`, false)
@@ -262,7 +266,25 @@ export default function AdminPage() {
                         </div>
                         <div style={{marginBottom:12}}><label style={{fontSize:12,color:'#8888aa',display:'block',marginBottom:4}}>Descripcion</label><textarea value={editData.description||''} onChange={e=>setEditData(p=>({...p,description:e.target.value}))} rows={2} style={{...inp,resize:'vertical'}} /></div>
                         <div style={{marginBottom:12}}><label style={{fontSize:12,color:'#8888aa',display:'block',marginBottom:4}}>Tags (coma separados)</label><input value={Array.isArray(editData.tags)?editData.tags.join(', '):editData.tags||''} onChange={e=>setEditData(p=>({...p,tags:e.target.value as any}))} style={inp} /></div>
-                        <div style={{marginBottom:16}}><label style={{fontSize:12,color:'#8888aa',display:'block',marginBottom:4}}>URL foto</label><input value={editData.photo_url||''} onChange={e=>setEditData(p=>({...p,photo_url:e.target.value}))} style={inp} placeholder="https://..." /></div>
+                        <div style={{marginBottom:16}}>
+                          <label style={{fontSize:12,color:'#8888aa',display:'block',marginBottom:6}}>Foto de perfil</label>
+                          <div style={{display:'flex',gap:8,marginBottom:8}}>
+                            <input value={editData.photo_url||''} onChange={e=>setEditData(p=>({...p,photo_url:e.target.value}))} style={{...inp,flex:1}} placeholder="https://..." />
+                            <button onClick={()=>fetchOnePhoto(editingId!,editData.name||'',editData.link||'')} disabled={fetchingPhoto===editingId}
+                              style={{...btnBlue,whiteSpace:'nowrap',opacity:fetchingPhoto===editingId?0.5:1,flexShrink:0}}>
+                              {fetchingPhoto===editingId?'⏳':'📸'} Obtener
+                            </button>
+                          </div>
+                          {editData.photo_url && (
+                            <div style={{display:'flex',gap:10,alignItems:'center',background:'rgba(255,255,255,0.03)',borderRadius:8,padding:'8px 12px'}}>
+                              <img src={`/api/photo?url=${encodeURIComponent(editData.photo_url)}`} alt="preview" style={{width:48,height:48,borderRadius:10,objectFit:'cover',flexShrink:0}} />
+                              <div>
+                                <p style={{fontSize:12,color:'#8888aa',marginBottom:4}}>Preview foto actual</p>
+                                <button onClick={()=>setEditData(p=>({...p,photo_url:''}))} style={{fontSize:11,color:'#ff5f6d',background:'none',border:'none',cursor:'pointer',padding:0,...f}}>✕ Quitar foto</button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                         <div style={{display:'flex',gap:8}}>
                           <button onClick={saveEdit} style={btnGreen}>💾 Guardar</button>
                           <button onClick={()=>setEditingId(null)} style={btnGray}>Cancelar</button>
