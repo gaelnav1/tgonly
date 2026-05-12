@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
       const nameMatches = html.match(/(?:@)([\w]{4,20})/g) || []
 
       if (tgMatches.length > 0) {
-        results.push({ source: 'twitter', tgLinks: [...new Set(tgMatches)], names: nameMatches.slice(0,10), ofLinks: [] })
+        results.push({ source: 'twitter', tgLinks: Array.from(new Set(tgMatches)), names: nameMatches.slice(0,10), ofLinks: [] })
         log.push(`Twitter: ${tgMatches.length} links encontrados`)
       }
     } catch { log.push(`Twitter: sin acceso`) }
