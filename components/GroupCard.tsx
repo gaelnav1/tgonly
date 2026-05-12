@@ -9,8 +9,11 @@ function slugify(name: string) {
   return name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')
 }
 function getPhotoSrc(group: Group): string | null {
-  if (group.photo_url) return `/api/photo?url=${encodeURIComponent(group.photo_url)}`
-  if (group.username) return `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}`
+  const idParam = group.id ? `&id=${group.id}` : ''
+  const linkParam = group.link && group.link !== '#' ? `&link=${encodeURIComponent(group.link)}` : ''
+  if (group.photo_url) return `/api/photo?url=${encodeURIComponent(group.photo_url)}${idParam}${linkParam}`
+  if (group.username) return `/api/photo?username=${group.username}${idParam}${linkParam}`
+  if (group.link && group.link !== '#') return `/api/photo?link=${encodeURIComponent(group.link)}${idParam}`
   return null
 }
 export default function GroupCard({ group }: { group: Group }) {

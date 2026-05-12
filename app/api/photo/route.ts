@@ -40,7 +40,14 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      // Si fallo la URL guardada — intentar obtenerla del bot por username
+      // Si fallo la URL guardada — intentar scraping del link del grupo
+      if (groupId) {
+        const link = req.nextUrl.searchParams.get('link')
+        if (link && link !== '#') {
+          const scraped = await fetchByScraing(link, groupId)
+          if (scraped) return scraped
+        }
+      }
       if (groupId && username) {
         return await fetchFromBot(username, groupId)
       }
@@ -52,7 +59,37 @@ export async function GET(req: NextRequest) {
     return await fetchFromBot(username, groupId)
   }
 
+  // Solo link — scraping directo
+  const linkOnly = req.nextUrl.searchParams.get('link')
+  if (linkOnly && linkOnly !== '#') {
+    const scraped = await fetchByScraing(linkOnly, groupId)
+    if (scraped) return scraped
+  }
+
   return new NextResponse('Not found', { status: 404 })
+}
+
+async function fetchByScraing(link: string, groupId: string | null): Promise<NextResponse | null> {
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://kftdlkakcuyexifdhlnr.supabase.co'
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmdGRsa2FrY3V5ZXhpZmRobG5yIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjczMTA3NywiZXhwIjoyMDkyMzA3MDc3fQ.ZN1H9KVv-P5262g6gCGHv4f7_HVjr--jEwMFsqdcBBw'
+  try {
+    const res = await fetch(link, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)' }, signal: AbortSignal.timeout(5000) })
+    const html = await res.text()
+    const m = html.match(/<meta property="og:image" content="([^"]+)"/)
+    if (!m?.[1]) return null
+    const photoUrl = m[1]
+    // Guardar en Supabase
+    if (groupId) {
+      fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${groupId}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ photo_url: photoUrl })
+      }).catch(() => {})
+    }
+    const imgRes = await fetch(photoUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } })
+    if (imgRes.ok) return new NextResponse(await imgRes.arrayBuffer(), { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'public, max-age=86400' } })
+  } catch {}
+  return null
 }
 
 async function fetchFromBot(username: string, groupId: string | null): Promise<NextResponse> {
