@@ -35,7 +35,15 @@ export default async function GroupPage({ params }: { params: { categoria: strin
 
   const cat = staticCategories.find(c => c.slug === params.categoria)
   const related = groups.filter(g => g.category === params.categoria && slugify(g.name) !== params.slug).slice(0,3)
-  const photoSrc = group.photo_url ? `/api/photo?url=${encodeURIComponent(group.photo_url)}` : group.username ? `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}` : null
+  const idParam   = group.id ? `&id=${group.id}` : ''
+  const linkParam = group.link && group.link !== '#' ? `&link=${encodeURIComponent(group.link)}` : ''
+  const photoSrc  = group.photo_url
+    ? `/api/photo?url=${encodeURIComponent(group.photo_url)}${idParam}${linkParam}`
+    : group.username
+    ? `/api/photo?username=${group.username}${idParam}${linkParam}`
+    : group.link && group.link !== '#'
+    ? `/api/photo?link=${encodeURIComponent(group.link)}${idParam}`
+    : null
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
