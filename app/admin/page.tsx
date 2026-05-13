@@ -28,6 +28,10 @@ export default function AdminPage() {
   const [pending, setPending]       = useState<PendingGroup[]>([])
   const [pendingCats, setPendingCats] = useState<PendingCat[]>([])
   const [syncing, setSyncing]       = useState(false)
+  const [indexing, setIndexing]     = useState(false)
+  const [indexLog, setIndexLog]     = useState<{url:string;status:string}[]>([])
+  const [showIndex, setShowIndex]   = useState(false)
+  const [indexCat, setIndexCat]     = useState('fans')
   const [syncCat, setSyncCat]         = useState('')
   const [fetchingPhoto, setFetchingPhoto] = useState<string|null>(null)
   const [syncLog, setSyncLog]       = useState<SyncEntry[]>([])
@@ -85,6 +89,21 @@ export default function AdminPage() {
       }
     } catch { notify('Error', false) }
     finally { setFetchingPhoto(null) }
+  }
+
+  async function indexUrls() {
+    setIndexing(true); setIndexLog([]); setShowIndex(true)
+    try {
+      const res = await fetch('/api/indexing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+        body: JSON.stringify({ category: indexCat })
+      })
+      const d = await res.json()
+      if (d.results) setIndexLog(d.results)
+      notify(d.message || 'Indexación completada')
+    } catch { notify('Error al indexar', false) }
+    finally { setIndexing(false) }
   }
 
   async function syncPhotos() {
