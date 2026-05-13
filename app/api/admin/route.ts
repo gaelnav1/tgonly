@@ -37,6 +37,9 @@ export async function POST(req: NextRequest) {
 
     if (!ins.ok) return NextResponse.json({ error: await ins.text() }, { status: 500 })
     await fetch(`${SUPABASE_URL}/rest/v1/groups_pending?id=eq.${id}`, { method: 'PATCH', headers: h, body: JSON.stringify({ status: 'aprobado' }) })
+    // Ping a Google para reindexar el sitemap
+    fetch('https://www.google.com/ping?sitemap=https://telegramonly.com/sitemap.xml').catch(()=>{})
+
     return NextResponse.json({ ok: true, message: `Grupo aprobado${photoUrl ? ' con foto ✅' : ''}` })
   }
 
