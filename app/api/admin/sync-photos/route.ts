@@ -27,10 +27,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, log: [{ name: body.name, link: body.link, status: '✅ foto guardada', method: result.method, photo: result.photoUrl }] })
   }
 
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/groups?photo_url=is.null&select=id,name,link,username&limit=100`,
-    { headers: h }
-  )
+  const body2 = await req.json().catch(() => ({}))
+  const category = body2.category || ''
+
+  let url = `${SUPABASE_URL}/rest/v1/groups?photo_url=is.null&select=id,name,link,username&limit=100`
+  if (category) url += `&category=eq.${category}`
+
+  const res = await fetch(url, { headers: h })
   const groups = await res.json()
   if (!Array.isArray(groups)) return NextResponse.json({ error: 'Error obteniendo grupos' }, { status: 500 })
 

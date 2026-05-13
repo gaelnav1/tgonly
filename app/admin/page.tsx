@@ -28,6 +28,7 @@ export default function AdminPage() {
   const [pending, setPending]       = useState<PendingGroup[]>([])
   const [pendingCats, setPendingCats] = useState<PendingCat[]>([])
   const [syncing, setSyncing]       = useState(false)
+  const [syncCat, setSyncCat]         = useState('')
   const [fetchingPhoto, setFetchingPhoto] = useState<string|null>(null)
   const [syncLog, setSyncLog]       = useState<SyncEntry[]>([])
   const [showLog, setShowLog]       = useState(false)
@@ -89,7 +90,7 @@ export default function AdminPage() {
   async function syncPhotos() {
     setSyncing(true); setSyncLog([]); setShowLog(false)
     try {
-      const res = await fetch('/api/admin/sync-photos',{method:'POST',headers:{'x-admin-password':password}})
+      const res = await fetch('/api/admin/sync-photos',{method:'POST',headers:{'Content-Type':'application/json','x-admin-password':password},body:JSON.stringify({category:syncCat})})
       const d = await res.json()
       notify(d.message||'Sincronizacion completada')
       if (d.log) { setSyncLog(d.log); setShowLog(true) }
@@ -208,6 +209,10 @@ export default function AdminPage() {
                 {CATEGORIES.map(c=><option key={c} value={c}>{c}</option>)}
               </select>
               <button onClick={fetchGroups} style={btnGray}>Actualizar</button>
+              <select value={syncCat} onChange={e=>setSyncCat(e.target.value)} style={{...inp,maxWidth:180,color:syncCat?'#f0eff8':'#8888aa'}}>
+                <option value="">Todas las categorias</option>
+                {CATEGORIES.map(c=><option key={c} value={c}>{c}</option>)}
+              </select>
               <button onClick={syncPhotos} disabled={syncing} style={{...btnBlue,opacity:syncing?0.6:1}}>
                 {syncing?'⏳ Sincronizando...':'📸 Sincronizar fotos'}
               </button>
