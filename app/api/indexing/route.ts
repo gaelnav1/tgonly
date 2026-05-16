@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Limitar a 200 por día (límite de Google)
-  toIndex = [...new Set(toIndex)].slice(0, 200)
+  toIndex = Array.from(new Set(toIndex)).slice(0, 200)
 
   try {
     const token = await getAccessToken()
