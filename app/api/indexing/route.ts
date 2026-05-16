@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       ok: true,
       message: `${ok} URLs indexadas, ${limited} límite diario, ${errors} errores`,
-      total: results.length, ok, limited, errors,
+      total: results.length, okCount: ok, limited, errors,
       results,
     })
   } catch (e: any) {
