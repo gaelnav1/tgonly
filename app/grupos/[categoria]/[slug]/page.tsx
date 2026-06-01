@@ -21,12 +21,10 @@ export async function generateMetadata({ params }: { params: { categoria: string
   const groups = await getAllGroups()
   const group = groups.find(g => g.category === params.categoria && slugify(g.name) === params.slug)
   if (!group) return {}
+  const tipo = params.categoria === 'fans' ? 'Canal' : 'Grupo'
   return {
-    const isFans = params.categoria === 'fans'
-    const tipo = isFans ? 'Canal' : 'Grupo'
-    return {
     title: `${group.name} — ${tipo} de Telegram | TGOnly`,
-    description: group.desc || `Unete al grupo de Telegram ${group.name}. ${group.members} miembros activos.`,
+    description: group.desc || `Unete al ${tipo.toLowerCase()} de Telegram ${group.name}. ${group.members} miembros activos.`,
     alternates: { canonical: `https://telegramonly.com/grupos/${params.categoria}/${params.slug}` },
   }
 }
