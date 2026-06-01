@@ -17,7 +17,12 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const [groups, categories] = await Promise.all([getAllGroups(), getAllCategories()])
-  const trendingGroups = groups.filter(g => g.trending).slice(0, 6)
+  const trendingGroups = (() => {
+    const trending = groups.filter(g => g.trending)
+    const fans = groups.filter(g => g.category === 'fans' && !g.trending)
+    const combined = [...trending, ...fans]
+    return combined.slice(0, 6)
+  })()
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{ fontFamily:"'DM Sans',sans-serif" }}>
