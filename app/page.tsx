@@ -176,7 +176,24 @@ export default function Home() {
           </p>
         </section>
 
-        {/* FOOTER */}
+        {/* BLOQUE SEO */}
+      <section className="relative z-10 max-w-6xl mx-auto px-10 pb-16">
+        <div className="bg-[#111118] border border-white/[0.07] rounded-2xl p-8">
+          <h2 className="font-syne font-bold text-[18px] mb-4">
+            <span className="text-[#2AABEE]">Telegram Only</span> — El Mejor Directorio de Telegram en Español
+          </h2>
+          <p className="text-[#8888aa] text-[13px] leading-relaxed mb-3">
+            <strong className="text-[#f0eff8]">TelegramOnly.com</strong> es el directorio número 1 de grupos y canales de Telegram en español para toda LATAM. 
+            Encuentra comunidades de cripto, gaming, OnlyFans, deportes, noticias y mucho más — todas verificadas y activas.
+          </p>
+          <p className="text-[#8888aa] text-[13px] leading-relaxed">
+            Busca entre miles de <strong className="text-[#f0eff8]">grupos de Telegram en español</strong>, 
+            desde <strong className="text-[#f0eff8]">canales de Telegram OnlyFans</strong> hasta comunidades de cripto y tech para México, Colombia, Argentina y toda América Latina.
+          </p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
         <footer className="relative z-10 border-t border-white/[0.07] px-10 py-7 flex items-center justify-between text-[13px] text-[#8888aa]">
           <span className="font-syne font-extrabold text-base text-[#f0eff8]">TG<span className="text-[#2AABEE]">Only</span></span>
           <nav className="flex gap-6">

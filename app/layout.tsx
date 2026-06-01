@@ -4,10 +4,11 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://tgonly.com'),
   title: {
-    default: 'TGOnly — Directorio #1 de Grupos de Telegram en Español',
-    template: '%s | TGOnly',
+    default: 'Telegram Only — Directorio #1 de Grupos de Telegram en Español | TGOnly',
+    template: '%s | Telegram Only - TGOnly',
   },
-  description: 'El directorio más completo de grupos de Telegram en español. Cripto, tech, gaming, educación y más para toda LATAM.',
+  description: 'Telegram Only — El directorio más completo de grupos y canales de Telegram en español. Cripto, gaming, OnlyFans, tech, deportes y más para toda LATAM.',
+  keywords: 'telegram only, telegramonly, grupos telegram, canales telegram, telegram onlyfans, telegram latam, grupos telegram espanol, telegram only fans',
   robots: {
     index: true,
     follow: true,
