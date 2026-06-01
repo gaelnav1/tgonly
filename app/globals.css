@@ -4,35 +4,31 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --accent: #2AABEE;
-}
+:root { --accent: #2AABEE; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #0a0a0f; color: #f0eff8; -webkit-font-smoothing: antialiased; }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: #0a0a0f;
-  color: #f0eff8;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Noise texture overlay */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+  content: ''; position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
+  pointer-events: none; z-index: 0; opacity: 0.5;
 }
 
-.font-syne {
-  font-family: 'Syne', sans-serif;
+.theme-toggle-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 5px 12px; cursor: pointer;
+  font-size: 14px; color: #f0eff8; transition: background .2s; white-space: nowrap;
 }
+.theme-toggle-btn:hover { background: rgba(255,255,255,0.1); }
+
+.light body { background: #f4f5f7 !important; color: #111118 !important; }
+.light .bg-\[\#0a0a0f\] { background-color: #f4f5f7 !important; }
+.light .bg-\[\#111118\] { background-color: #ffffff !important; }
+.light .bg-\[\#1c1c27\] { background-color: #eef0f3 !important; }
+.light .text-\[\#f0eff8\] { color: #111118 !important; }
+.light .text-\[\#8888aa\] { color: #6b7280 !important; }
+.light .border-white\/\[0\.07\] { border-color: rgba(0,0,0,0.08) !important; }
+.light .bg-\[\#0a0a0f\]\/85 { background-color: rgba(244,245,247,0.92) !important; }
+.light .text-\[\#3dd68c\] { color: #16a34a !important; }
