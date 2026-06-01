@@ -6,8 +6,7 @@ export const metadata: Metadata = {
   icons: { icon: '/favicon.ico', shortcut: '/favicon.ico', apple: '/favicon-192.png' },
   title: { default: 'Telegram Only — Directorio #1 de Grupos de Telegram en Español | TGOnly', template: '%s | TGOnly' },
   description: 'Telegram Only — El directorio #1 de grupos y canales de Telegram en español. OnlyFans, cripto, gaming, tech y más para toda LATAM.',
-  keywords: 'telegram only, telegramonly, grupos telegram, canales telegram, telegram onlyfans, telegram latam',
-  keywords: 'grupos telegram espanol, telegram onlyfans, grupos telegram latam, telegram only fans, canales telegram, grupos telegram 2025',
+  keywords: 'telegram only, telegramonly, grupos telegram espanol, canales telegram, telegram onlyfans, telegram latam, telegram only fans, grupos telegram 2025',
   robots: { index: true, follow: true },
 }
 
