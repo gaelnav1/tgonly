@@ -53,14 +53,15 @@ export default async function CategoryPage({ params }: { params: { categoria: st
         </nav>
 
         <div className="mb-12">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-5xl">{cat.emoji}</span>
-            <div>
-              <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
-                Grupos de Telegram de <span className="text-[#2AABEE]">{cat.name}</span>
-              </h1>
-              <p className="text-[#6f7894] mt-1 text-sm">{catGroups.length} comunidades verificadas en espanol</p>
+          <div className="mb-4">
+            <div className="mb-4 h-24 rounded-3xl bg-gradient-to-r from-[#edf4ff] via-[#f8faff] to-[#fff4cf] border border-[#e6eaf2] relative overflow-hidden">
+              <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full border-[18px] border-white/60" />
+              <div className="absolute left-6 bottom-4 text-xs font-bold uppercase tracking-[.18em] text-[#1769ff]">Categoría</div>
             </div>
+            <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
+              Grupos de Telegram de <span className="text-[#1769ff]">{cat.name}</span>
+            </h1>
+            <p className="text-[#6f7894] mt-2 text-sm">{catGroups.length} comunidades verificadas en español</p>
           </div>
         </div>
 
@@ -89,7 +90,6 @@ export default async function CategoryPage({ params }: { params: { categoria: st
             </div>
           ) : (
             <div className="text-center py-16 text-[#6f7894]">
-              <p className="text-5xl mb-4">{cat.emoji}</p>
               <p className="mb-4">Pronto habra grupos de {cat.name} disponibles.</p>
               <Link href="/agregar" className="inline-block bg-[#1769ff] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#0d5cef] transition-colors">Agrega el primero →</Link>
             </div>
@@ -101,9 +101,7 @@ export default async function CategoryPage({ params }: { params: { categoria: st
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {related.map(relCat => (
               <Link key={relCat.slug} href={`/grupos/${relCat.slug}`}
-                className="flex flex-col gap-2 bg-[#f3f6fb] border border-[#e6eaf2] rounded-xl p-4 hover:-translate-y-0.5 hover:border-[#e0e6ef] transition-all">
-                <span className="text-[22px]">{relCat.emoji}</span>
-                <span className="text-[13px] font-medium text-[#11182d]">{relCat.name}</span>
+                className="flex flex-col gap-2 bg-[#f3f6fb] border border-[#e6eaf2] rounded-xl p-4 hover:-translate-y-0.5 hover:border-[#e0e6ef] transition-all">                <span className="text-[13px] font-medium text-[#11182d]">{relCat.name}</span>
                 <span className="text-[11px] text-[#6f7894]">{relCat.count} grupos</span>
               </Link>
             ))}
