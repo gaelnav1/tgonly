@@ -179,6 +179,25 @@ export default async function Home() {
             </div>
           </section>
 
+
+          <section className="tg-surface p-7 sm:p-10 mb-5 grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <p className="text-xs font-bold text-[#1769ff] uppercase tracking-wider mb-2">¿Por qué TGOnly?</p>
+              <h2 className="font-syne font-extrabold text-[28px] leading-tight mb-4">Más que un directorio,<br/>una forma simple de descubrir Telegram</h2>
+              <p className="text-[#6f7894] leading-relaxed">
+                Explora comunidades organizadas por categorías, revisa su contexto y encuentra el enlace adecuado sin perderte entre resultados.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[['🔎','Descubre rápido'],['🛡️','Grupos verificados'],['👥','Más comunidades'],['⚡','Siempre actualizado']].map(([i,t])=>(
+                <div key={t} className="rounded-2xl border border-[#e6eaf2] p-4 bg-[#f9fbff]">
+                  <div className="w-10 h-10 rounded-xl bg-[#edf4ff] flex items-center justify-center mb-3">{i}</div>
+                  <p className="font-bold text-sm">{t}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <section className="rounded-3xl border border-[#e2eee6] bg-[#edf9f1] p-6 sm:p-7 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
             <div>
               <div className="font-syne font-extrabold text-xl">TGOnly</div>
