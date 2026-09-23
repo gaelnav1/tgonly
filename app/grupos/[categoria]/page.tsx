@@ -53,15 +53,14 @@ export default async function CategoryPage({ params }: { params: { categoria: st
         </nav>
 
         <div className="mb-12">
-          <div className="mb-4">
-            <div className="mb-4 h-24 rounded-3xl bg-gradient-to-r from-[#edf4ff] via-[#f8faff] to-[#fff4cf] border border-[#e6eaf2] relative overflow-hidden">
-              <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full border-[18px] border-white/60" />
-              <div className="absolute left-6 bottom-4 text-xs font-bold uppercase tracking-[.18em] text-[#1769ff]">Categoría</div>
+          <div className="flex items-center gap-4 mb-4">
+            <span className="w-16 h-16 rounded-2xl bg-white border border-[#e6eaf2] shadow-[0_8px_24px_rgba(39,56,95,.06)] flex items-center justify-center text-4xl">{cat.emoji}</span>
+            <div>
+              <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
+                Grupos de Telegram de <span className="text-[#1769ff]">{cat.name}</span>
+              </h1>
+              <p className="text-[#6f7894] mt-1 text-sm">{catGroups.length} comunidades verificadas en español</p>
             </div>
-            <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
-              Grupos de Telegram de <span className="text-[#1769ff]">{cat.name}</span>
-            </h1>
-            <p className="text-[#6f7894] mt-2 text-sm">{catGroups.length} comunidades verificadas en español</p>
           </div>
         </div>
 
@@ -90,6 +89,7 @@ export default async function CategoryPage({ params }: { params: { categoria: st
             </div>
           ) : (
             <div className="text-center py-16 text-[#6f7894]">
+              <p className="text-5xl mb-4">{cat.emoji}</p>
               <p className="mb-4">Pronto habra grupos de {cat.name} disponibles.</p>
               <Link href="/agregar" className="inline-block bg-[#1769ff] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#0d5cef] transition-colors">Agrega el primero →</Link>
             </div>
