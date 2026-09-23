@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getAllGroups } from '@/lib/getGroups'
-import { categories as staticCategories } from '@/data/groups'
+import { getAllGroups, getAllCategories } from '@/lib/getGroups'
 import Navbar from '@/components/Navbar'
 
 export const revalidate = 60
@@ -34,7 +33,8 @@ export default async function GroupPage({ params }: { params: { categoria: strin
   const group = groups.find(g => g.category === params.categoria && slugify(g.name) === params.slug)
   if (!group) notFound()
 
-  const cat = staticCategories.find(c => c.slug === params.categoria)
+  const categories = await getAllCategories()
+  const cat = categories.find(c => c.slug === params.categoria)
   const related = groups.filter(g => g.category === params.categoria && slugify(g.name) !== params.slug).slice(0,3)
   const photoSrc = group.photo_url ? `/api/photo?url=${encodeURIComponent(group.photo_url)}` : group.username ? `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}` : null
 
