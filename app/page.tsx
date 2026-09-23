@@ -86,7 +86,7 @@ export default async function Home() {
 
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-10">
           <section className="tg-surface p-6 sm:p-8 lg:p-9 mb-5 overflow-hidden">
-            <div className="grid lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,.95fr)] gap-6 lg:gap-7 items-stretch">
+            <div className="grid lg:grid-cols-[1.6fr_.9fr] gap-8 items-stretch">
               <div className="flex flex-col justify-center py-1">
                 <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[#1769ff] mb-3">Comunidades que te conectan</p>
                 <h1 className="font-syne font-extrabold text-[clamp(38px,4.6vw,58px)] leading-[1.01] tracking-[-1.6px] mb-4 max-w-[760px]">
@@ -114,45 +114,46 @@ export default async function Home() {
                 </div>
               </div>
 
-              <div className="relative min-h-[250px] rounded-[28px] bg-[#FFF4C9] overflow-hidden p-7">
-                <div className="relative z-10 max-w-[230px]">
-                  <h2 className="font-syne font-extrabold text-[24px] leading-[1.05] tracking-[-0.5px] text-[#0F1733]">
-                    Conecta con<br/>lo que te interesa
+              <div className="relative ml-auto w-full max-w-[430px] min-h-[330px] rounded-[34px] bg-[#FFF3C9] overflow-hidden p-8">
+                <div className="relative z-10 max-w-[210px]">
+                  <h2 className="font-syne font-extrabold text-[26px] leading-[1.05] tracking-[-0.5px] text-[#0D1533]">
+                    Conecta<br/>con<br/>lo que te<br/>interesa
                   </h2>
-                  <p className="mt-4 text-[13px] leading-[1.55] text-[#5F6C89]">
+
+                  <p className="mt-5 text-[13px] leading-[1.6] text-[#66718D]">
                     Miles de comunidades<br/>reales en un solo lugar.<br/>Explora. Únete. Crece.
                   </p>
-                  <div className="mt-5 w-11 h-[6px] rounded-full bg-[#F4C400]" />
+
+                  <div className="mt-6 h-[6px] w-14 rounded-full bg-[#F4C400]" />
                 </div>
 
-                <div className="absolute right-10 top-8 flex gap-3 rotate-[18deg]">
-                  <span className="block w-[6px] h-[28px] rounded-full bg-[#F4C400]" />
-                  <span className="block w-[6px] h-[20px] rounded-full bg-[#F4C400]" />
+                <div className="absolute right-12 top-8 flex gap-3">
+                  <span className="block h-[34px] w-[6px] rotate-[14deg] rounded-full bg-[#F4C400]" />
+                  <span className="block h-[26px] w-[6px] rotate-[14deg] rounded-full bg-[#F4C400]" />
                 </div>
 
-                <div className="absolute right-7 top-1/2 -translate-y-1/2 rotate-[-8deg]">
-                  <div className="w-[170px] h-[170px] rounded-[32px] bg-[#E7EEFF] shadow-[0_10px_24px_rgba(39,56,95,.10)] flex items-center justify-center">
-                    <div className="text-[#1769FF] scale-[1.2]">
-                      <svg width="76" height="76" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute right-3 bottom-5 rounded-[18px] bg-white shadow-[0_10px_28px_rgba(39,56,95,.12)] px-4 py-3 flex items-center gap-3 min-w-[210px]">
-                  <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] flex items-center justify-center text-[#1769FF]">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5 1.34 3.5 3 3.5Z"/>
-                      <path d="M8 11c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11Z"/>
-                      <path d="M16 20v-1c0-1.66-1.79-3-4-3s-4 1.34-4 3v1"/>
-                      <path d="M20 20v-1c0-1.2-.94-2.23-2.28-2.74"/>
-                      <path d="M4 20v-1c0-1.2.94-2.23 2.28-2.74"/>
+                <div className="absolute right-7 top-[94px] rotate-[-8deg]">
+                  <div className="flex h-[190px] w-[190px] items-center justify-center rounded-[36px] bg-[#E8EEFF] shadow-[0_18px_40px_rgba(39,56,95,.12)]">
+                    <svg width="92" height="92" viewBox="0 0 24 24" fill="currentColor" className="text-[#256BFF]" aria-hidden="true">
+                      <path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z" />
                     </svg>
                   </div>
+                </div>
+
+                <div className="absolute bottom-6 left-1/2 z-10 flex min-w-[260px] -translate-x-1/2 items-center gap-3 rounded-[22px] bg-white px-5 py-4 shadow-[0_14px_34px_rgba(39,56,95,.14)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF4FF] text-[#256BFF]">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5 1.34 3.5 3 3.5Z" />
+                      <path d="M8 11c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11Z" />
+                      <path d="M16 20v-1c0-1.66-1.79-3-4-3s-4 1.34-4 3v1" />
+                      <path d="M20 20v-1c0-1.2-.94-2.23-2.28-2.74" />
+                      <path d="M4 20v-1c0-1.2.94-2.23 2.28-2.74" />
+                    </svg>
+                  </div>
+
                   <div className="leading-tight">
-                    <div className="text-[14px] font-bold text-[#243250]">Comunidades reales</div>
-                    <div className="text-[12px] text-[#7A86A2]">Personas como tú</div>
+                    <div className="text-[15px] font-bold text-[#243250]">Comunidades reales</div>
+                    <div className="text-[13px] text-[#7A86A2]">Personas como tú</div>
                   </div>
                 </div>
               </div>
