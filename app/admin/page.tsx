@@ -33,16 +33,22 @@ export default function AdminPage() {
   async function handleLogin() {
     setLoading(true); setAuthError('')
     try {
-      const [gRes,pRes,cRes] = await Promise.all([
-        fetch('/api/admin/grupos',{headers:{'x-admin-password':password}}),
-        fetch('/api/admin',{headers:{'x-admin-password':password}}),
-        fetch('/api/categorias',{headers:{'x-admin-password':password}}),
-      ])
+      const gRes = await fetch('/api/admin/grupos',{headers:{'x-admin-password':password}})
       if (gRes.status===401) { setAuthError('Contrasena incorrecta'); setLoading(false); return }
-      const [gData,pData,cData] = await Promise.all([gRes.json(),pRes.json(),cRes.json()])
-      setGroups(Array.isArray(gData)?gData:[]); setPending(Array.isArray(pData)?pData:[]); setPendingCats(Array.isArray(cData)?cData:[])
+      const gData = await gRes.json()
+      setGroups(Array.isArray(gData)?gData:[])
+      try {
+        const pRes = await fetch('/api/admin',{headers:{'x-admin-password':password}})
+        const pData = await pRes.json()
+        setPending(Array.isArray(pData)?pData:[])
+      } catch { setPending([]) }
+      try {
+        const cRes = await fetch('/api/categorias',{headers:{'x-admin-password':password}})
+        const cData = await cRes.json()
+        setPendingCats(Array.isArray(cData)?cData:[])
+      } catch { setPendingCats([]) }
       setAuthed(true)
-    } catch { setAuthError('Error de conexion') }
+    } catch(e:any) { setAuthError('Error de conexion: ' + (e?.message||'desconocido')) }
     finally { setLoading(false) }
   }
 
