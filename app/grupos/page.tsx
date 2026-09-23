@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getAllGroups, getAllCategories } from '@/lib/getGroups'
 import Navbar from '@/components/Navbar'
+import CategoryIcon from '@/components/CategoryIcon'
 
 export const revalidate = 60
 export const metadata: Metadata = {
@@ -36,7 +37,7 @@ export default async function GruposPage() {
           {countByCategory.map(cat => (
             <Link key={cat.slug} href={`/grupos/${cat.slug}`}
               className="group flex items-center gap-4 bg-white border border-[#e6eaf2] rounded-2xl p-5 hover:border-[#2AABEE]/30 hover:-translate-y-0.5 transition-all duration-200">
-              <div className="w-14 h-14 rounded-xl bg-[#f3f6fb] flex items-center justify-center text-3xl flex-shrink-0">{cat.emoji}</div>
+              <CategoryIcon slug={cat.slug} size="lg" />
               <div className="flex-1 min-w-0">
                 <h2 className="font-syne font-bold text-[16px] text-[#11182d] mb-1">{cat.name}</h2>
                 <div className="flex items-center gap-3 text-[12px]">
