@@ -1,28 +1,28 @@
 import Link from 'next/link'
-import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-[60px] bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/[0.07]">
-      <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 lg:px-10 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 font-syne font-extrabold text-lg sm:text-xl no-underline text-[#f0eff8] flex-shrink-0">
-          <span className="w-2 h-2 rounded-full bg-[#2AABEE] shadow-[0_0_10px_#2AABEE]" />
-          TG<span className="text-[#2AABEE]">Only</span>
-        </Link>
-
-        <div className="hidden md:flex items-center gap-6 ml-auto">
-          <Link href="/buscar" className="text-[#8888aa] text-sm font-medium hover:text-[#f0eff8] transition-colors">Buscar</Link>
-          <Link href="/grupos" className="text-[#8888aa] text-sm font-medium hover:text-[#f0eff8] transition-colors">Explorar</Link>
-          <Link href="/agregar" className="bg-[#2AABEE] text-black font-semibold text-[13px] px-4 py-2 rounded-lg hover:bg-[#1a8fd1] transition-colors">Agregar grupo</Link>
-          <ThemeToggle />
-        </div>
-
-        <div className="flex md:hidden items-center gap-2 ml-auto">
-          <Link href="/buscar" aria-label="Buscar" className="w-9 h-9 rounded-lg border border-white/[0.10] flex items-center justify-center text-[#f0eff8] hover:border-[#2AABEE]/40 transition-colors">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <nav className="fixed top-0 left-0 right-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-4">
+        <div className="h-[62px] bg-white/95 backdrop-blur-xl border border-[#e6eaf2] shadow-[0_10px_30px_rgba(39,56,95,.06)] rounded-2xl px-4 sm:px-5 flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-3 font-syne font-extrabold text-xl no-underline text-[#11182d] flex-shrink-0">
+            <span className="w-9 h-9 rounded-xl bg-[#ffd91a] flex items-center justify-center text-[17px] -rotate-6">➤</span>
+            TGOnly
           </Link>
-          <Link href="/grupos" className="text-[#8888aa] text-sm font-medium px-2 py-2">Explorar</Link>
-          <ThemeToggle />
+
+          <div className="hidden md:flex items-center gap-2">
+            <Link href="/buscar" className="px-4 py-2 rounded-xl text-[#53607e] text-sm font-semibold hover:bg-[#f3f6fb] hover:text-[#1769ff] transition-colors">⌕&nbsp; Buscar</Link>
+            <Link href="/grupos" className="px-4 py-2 rounded-xl text-[#53607e] text-sm font-semibold hover:bg-[#f3f6fb] hover:text-[#1769ff] transition-colors">◉&nbsp; Explorar</Link>
+            <Link href="/agregar" className="px-4 py-2 rounded-xl text-[#53607e] text-sm font-semibold hover:bg-[#f3f6fb] hover:text-[#1769ff] transition-colors">＋&nbsp; Agregar grupo</Link>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Link href="/buscar" aria-label="Buscar" className="md:hidden w-9 h-9 rounded-xl border border-[#e6eaf2] flex items-center justify-center text-[#1769ff]">⌕</Link>
+            <div className="hidden sm:flex items-center gap-2 bg-[#f6f8fc] border border-[#e6eaf2] rounded-xl py-1.5 pl-1.5 pr-3">
+              <div className="w-8 h-8 rounded-lg bg-[#dce7ff] flex items-center justify-center text-xs font-bold text-[#1769ff]">TG</div>
+              <span className="text-sm font-semibold text-[#34405f]">TGOnly</span>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
