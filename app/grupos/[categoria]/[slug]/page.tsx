@@ -22,8 +22,9 @@ export async function generateMetadata({ params }: { params: { categoria: string
   const group = groups.find(g => g.category === params.categoria && slugify(g.name) === params.slug)
   if (!group) return {}
   return {
-    title: `${group.name} — Grupo de Telegram | TGOnly`,
-    description: group.desc || `Unete al grupo de Telegram ${group.name}. ${group.members} miembros activos.`,
+    title: `${group.name} Telegram — Grupo, canal y enlace | TGOnly`,
+    description: group.desc || `Encuentra ${group.name} en Telegram. Consulta el enlace, comunidad relacionada y datos del grupo en TGOnly.`,
+    keywords: [`${group.name} telegram`, `telegram ${group.name}`, `grupo telegram ${group.name}`, `canal telegram ${group.name}`],
     alternates: { canonical: `https://telegramonly.com/grupos/${params.categoria}/${params.slug}` },
   }
 }
@@ -40,14 +41,35 @@ export default async function GroupPage({ params }: { params: { categoria: strin
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context":"https://schema.org","@type":"SocialMediaPosting",
-        "name":group.name,"description":group.desc||`Grupo de Telegram: ${group.name}`,
-        "url":`https://telegramonly.com/grupos/${params.categoria}/${params.slug}`,
-        "datePublished":new Date().toISOString(),"dateModified":new Date().toISOString(),
-        "author":{"@type":"Organization","name":"TGOnly","url":"https://telegramonly.com"},
-        "sharedContent":{"@type":"WebPage","url":group.link},
-        "keywords":group.tags?.join(', ')||group.category,
-        "interactionStatistic":{"@type":"InteractionCounter","interactionType":"https://schema.org/FollowAction","userInteractionCount":group.members}
+        "@context":"https://schema.org",
+        "@graph":[
+          {
+            "@type":"WebPage",
+            "@id":`https://telegramonly.com/grupos/${params.categoria}/${params.slug}#webpage`,
+            "url":`https://telegramonly.com/grupos/${params.categoria}/${params.slug}`,
+            "name":`${group.name} Telegram — Grupo, canal y enlace`,
+            "description":group.desc||`Información y enlace de Telegram relacionado con ${group.name}`,
+            "inLanguage":"es",
+            "isPartOf":{"@id":"https://telegramonly.com/#website"},
+            "about":{"@type":"Thing","name":group.name},
+            "mainEntity":{
+              "@type":"OnlineCommunity",
+              "name":group.name,
+              "url":group.link,
+              ...(group.username ? {"alternateName":`@${group.username.replace(/^@/,'')}`} : {})
+            },
+            "keywords":[group.name, `${group.name} telegram`, `telegram ${group.name}`, ...(group.tags||[])].join(', ')
+          },
+          {
+            "@type":"BreadcrumbList",
+            "itemListElement":[
+              {"@type":"ListItem","position":1,"name":"Inicio","item":"https://telegramonly.com"},
+              {"@type":"ListItem","position":2,"name":"Grupos","item":"https://telegramonly.com/grupos"},
+              {"@type":"ListItem","position":3,"name":cat?.name||params.categoria,"item":`https://telegramonly.com/grupos/${params.categoria}`},
+              {"@type":"ListItem","position":4,"name":group.name,"item":`https://telegramonly.com/grupos/${params.categoria}/${params.slug}`}
+            ]
+          }
+        ]
       })}} />
       <Navbar />
       <div className="max-w-3xl mx-auto px-6 pt-24 pb-24">
@@ -91,6 +113,19 @@ export default async function GroupPage({ params }: { params: { categoria: strin
             Unirme gratis en Telegram
           </a>
         </div>
+
+        <section className="bg-[#111118] border border-white/[0.07] rounded-2xl p-7 mb-8">
+          <h2 className="font-syne font-bold text-[18px] mb-3">{group.name} en Telegram</h2>
+          <p className="text-[#8888aa] text-[14px] leading-relaxed mb-4">
+            Esta página reúne la información disponible en TGOnly para encontrar <strong className="text-[#f0eff8]">{group.name} Telegram</strong>.
+            Puedes usar el enlace principal de arriba para abrir la comunidad relacionada directamente en Telegram.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {[group.name + ' telegram', 'telegram ' + group.name, 'grupo telegram ' + group.name, 'canal telegram ' + group.name].map(q => (
+              <span key={q} className="text-[12px] text-[#8888aa] bg-[#1c1c27] border border-white/[0.07] rounded-lg px-3 py-1.5">{q}</span>
+            ))}
+          </div>
+        </section>
 
         {related.length > 0 && (
           <div>
