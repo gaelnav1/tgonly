@@ -75,9 +75,7 @@ function HomeSchema({ categories }: { categories: Awaited<ReturnType<typeof getA
 
 export default async function Home() {
   const [categories, groups] = await Promise.all([getAllCategories(), getAllGroups()])
-  const trendingGroups = groups.filter(g => g.trending).slice(0, 4)
-  const featuredGroups = [...groups].sort((a,b)=>(b.score??0)-(a.score??0)).slice(0, 6)
-  const quickLinks = featuredGroups.slice(0, 6)
+  const featuredGroups = [...groups].sort((a,b)=>(Number(Boolean(b.trending))-Number(Boolean(a.trending))) || ((b.score??0)-(a.score??0))).slice(0,4)
 
   return (
     <>
@@ -85,40 +83,38 @@ export default async function Home() {
       <div className="min-h-screen bg-[#f5f7fb] text-[#11182d]">
         <Navbar />
 
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-16">
-          <section className="tg-surface overflow-hidden p-6 sm:p-10 lg:p-12 mb-5">
-            <div className="grid lg:grid-cols-[1.3fr_.7fr] gap-8 items-center">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-10">
+          <section className="tg-surface p-6 sm:p-8 lg:p-10 mb-5 overflow-hidden">
+            <div className="grid lg:grid-cols-[1.08fr_.92fr] gap-8 items-stretch">
               <div>
-                <div className="inline-flex items-center gap-2 bg-[#fff4cf] text-[#765d00] rounded-full px-3 py-1.5 text-xs font-bold mb-5">
-                  ● Comunidades que te conectan
-                </div>
-                <h1 className="font-syne font-extrabold text-[clamp(38px,6vw,66px)] leading-[1.02] tracking-[-2px] mb-5">
-                  Encuentra tu próxima<br/><span className="text-[#1769ff]">comunidad en Telegram</span>
+                <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[#1769ff] mb-3">Comunidades que te conectan</p>
+                <h1 className="font-syne font-extrabold text-[clamp(40px,6vw,64px)] leading-[1.02] tracking-[-2px] mb-4">
+                  Explora comunidades<br/>por <span className="text-[#1769ff]">categoría</span>
                 </h1>
-                <p className="text-[#6f7894] text-base sm:text-lg max-w-2xl mb-7">
-                  Busca personas, grupos, canales y temas. Encuentra contexto antes de abrir el enlace correcto en Telegram.
+                <p className="text-[#6f7894] text-base sm:text-lg max-w-2xl mb-6">
+                  Descubre grupos de Telegram sobre tus temas favoritos. Encuentra comunidades reales, activas y organizadas en un solo lugar.
                 </p>
-                <SearchBar />
-                {quickLinks.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4 items-center">
-                    <span className="text-xs text-[#8a94ac]">Búsquedas populares:</span>
-                    {quickLinks.map(g => (
-                      <Link key={g.name} href={`/grupos/${g.category}/${g.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`}
-                        className="text-xs font-semibold text-[#53607e] bg-[#f1f5fb] rounded-full px-3 py-1.5 hover:text-[#1769ff]">
-                        {g.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+
+                <div className="max-w-2xl">
+                  <SearchBar />
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-5">
+                  {['Todas','Populares','Nuevas','Verificadas'].map((t,i)=>(
+                    <span key={t} className={`rounded-full px-4 py-2 text-xs font-bold ${i===0?'bg-[#1769ff] text-white':'bg-[#edf2fa] text-[#68738e]'}`}>{t}</span>
+                  ))}
+                </div>
               </div>
 
-              <div className="relative min-h-[280px] hidden lg:block">
-                <div className="absolute top-0 left-2 w-[82%] h-[72%] rounded-[34px] bg-[#fff4cf] p-8">
-                  <p className="font-syne font-extrabold text-[28px] leading-tight">Conversaciones<br/>que importan</p>
-                  <p className="text-[#6f7894] mt-3">Personas reales.<br/>Comunidades reales.<br/>En Telegram.</p>
-                  <div className="w-10 h-1.5 rounded-full bg-[#ffd91a] mt-5" />
+              <div className="relative min-h-[300px] rounded-[34px] bg-[#fff5cf] overflow-hidden p-8">
+                <div className="relative z-10 max-w-[220px]">
+                  <h2 className="font-syne font-extrabold text-[28px] leading-tight">Conecta con<br/>lo que te interesa</h2>
+                  <p className="text-[#6f7894] mt-3 text-sm leading-relaxed">Miles de comunidades reales en un solo lugar.<br/>Explora. Únete. Crece.</p>
+                  <div className="w-10 h-1.5 rounded-full bg-[#ffd91a] mt-5"/>
                 </div>
-                <div className="absolute bottom-0 right-0 w-[58%] h-[60%] rounded-[34px] bg-[#eaf3ff] rotate-[-5deg] flex items-center justify-center text-[92px] text-[#1769ff] shadow-sm">➤</div>
+                <div className="absolute right-7 top-12 w-44 h-44 rounded-[34px] bg-[#e7efff] rotate-[-7deg] flex items-center justify-center text-[86px] text-[#1769ff] shadow-sm">➤</div>
+                <div className="absolute right-4 bottom-7 rounded-2xl bg-white shadow-[0_10px_28px_rgba(39,56,95,.10)] px-4 py-3 text-sm font-bold text-[#34405f]">👥 Comunidades reales</div>
+                <div className="absolute right-8 top-4 text-[#f1c900] text-3xl font-black">〃</div>
               </div>
             </div>
           </section>
@@ -132,45 +128,69 @@ export default async function Home() {
             ))}
           </section>
 
-          <section id="categories" className="tg-surface p-6 sm:p-8 mb-5">
+          <section className="tg-surface p-6 sm:p-8 mb-5">
             <div className="flex items-center justify-between mb-5">
-              <div><h2 className="font-syne font-extrabold text-[24px]">Explora por categoría</h2><p className="text-sm text-[#7b86a1] mt-1">Encuentra comunidades por tema.</p></div>
-              <Link href="/grupos" className="text-[#1769ff] text-sm font-bold">Ver todas →</Link>
+              <div>
+                <h2 className="font-syne font-extrabold text-[24px]">Todas las categorías</h2>
+                <p className="text-sm text-[#7b86a1] mt-1">Explora por temática y encuentra comunidades de tu interés.</p>
+              </div>
+              <Link href="/grupos" className="text-[#1769ff] text-sm font-bold">Ver todas las categorías →</Link>
             </div>
-            <CategoryGrid categories={categories.slice(0,8)} />
+            <CategoryGrid categories={categories.slice(0,12)} />
           </section>
 
-          <section id="trending" className="tg-surface p-6 sm:p-8 mb-5">
+          <section className="tg-surface p-6 sm:p-8 mb-5">
             <div className="flex items-center justify-between mb-5">
-              <div><h2 className="font-syne font-extrabold text-[24px]">🔥 Comunidades destacadas</h2><p className="text-sm text-[#7b86a1] mt-1">Descubre comunidades activas de diferentes categorías.</p></div>
-              <Link href="/grupos" className="text-[#1769ff] text-sm font-bold">Ver todos →</Link>
+              <div>
+                <h2 className="font-syne font-extrabold text-[24px]">🔥 Categorías en tendencia</h2>
+                <p className="text-sm text-[#7b86a1] mt-1">Las temáticas con más actividad destacada ahora mismo.</p>
+              </div>
+              <Link href="/grupos" className="text-[#1769ff] text-sm font-bold">Ver más tendencias →</Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {categories.slice(0,4).map((cat,i)=>{
+                const pastel=['#fff8de','#f2edff','#eaf4ff','#fff0f4'][i%4]
+                return (
+                  <Link key={cat.slug} href={`/grupos/${cat.slug}`} className="rounded-2xl p-5 border border-[#edf0f5] hover:-translate-y-0.5 transition-all" style={{background:pastel}}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center text-2xl">{cat.emoji}</div>
+                      <span className="rounded-full bg-[#e9f8ee] px-2.5 py-1 text-[10px] font-bold text-[#17834d]">↑ +{24+i*7}%</span>
+                    </div>
+                    <h3 className="font-bold mt-4">{cat.name}</h3>
+                    <p className="text-sm text-[#69758f] mt-1">Comunidades en crecimiento.</p>
+                    <p className="text-xs text-[#8a94ac] mt-4">{cat.count} grupos</p>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+
+          <section className="tg-surface p-6 sm:p-8 mb-5">
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h2 className="font-syne font-extrabold text-[24px]">⭐ Comunidades destacadas</h2>
+                <p className="text-sm text-[#7b86a1] mt-1">Grupos recomendados para empezar a explorar.</p>
+              </div>
+              <Link href="/buscar" className="text-[#1769ff] text-sm font-bold">Ver todas las comunidades →</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {(trendingGroups.length ? trendingGroups : featuredGroups.slice(0,4)).map(g => <GroupCard key={g.name} group={g} />)}
+              {featuredGroups.map(g => <GroupCard key={g.name} group={g} />)}
             </div>
           </section>
 
-          <section className="tg-surface p-7 sm:p-10 mb-5 grid md:grid-cols-2 gap-8 items-center">
+          <section className="rounded-3xl border border-[#e2eee6] bg-[#edf9f1] p-6 sm:p-7 flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
             <div>
-              <p className="text-xs font-bold text-[#1769ff] uppercase tracking-wider mb-2">¿Por qué TGOnly?</p>
-              <h2 className="font-syne font-extrabold text-[28px] leading-tight mb-4">Más que un directorio,<br/>una forma simple de descubrir Telegram</h2>
-              <p className="text-[#6f7894] leading-relaxed">Explora comunidades organizadas por categorías, revisa su contexto y encuentra el enlace adecuado sin perderte entre resultados.</p>
+              <div className="font-syne font-extrabold text-xl">TGOnly</div>
+              <p className="text-sm text-[#6f7894] mt-1 max-w-xl">Grupos y comunidades de Telegram en español para México, Argentina, Colombia y toda Latinoamérica.</p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              {[['🔎','Descubre rápido'],['🛡️','Grupos verificados'],['👥','Más comunidades'],['⚡','Siempre actualizado']].map(([i,t],idx)=><div key={t} className="rounded-2xl border border-[#e6eaf2] p-4 bg-[#f9fbff]"><div className="w-10 h-10 rounded-xl bg-[#edf4ff] flex items-center justify-center mb-3">{i}</div><p className="font-bold text-sm">{t}</p></div>)}
+            <div className="flex flex-wrap gap-5 text-sm text-[#66718d]">
+              <Link href="/grupos">Explorar</Link>
+              <Link href="/agregar">Agregar grupo</Link>
+              <Link href="/buscar">Buscar</Link>
             </div>
           </section>
-
-
-
         </main>
-
-        <footer className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pb-8">
-          <div className="rounded-3xl bg-[#edf9f1] border border-[#e2eee6] p-6 flex flex-col md:flex-row gap-5 md:items-center md:justify-between">
-            <div className="font-syne font-extrabold text-xl">TGOnly <span className="text-sm font-normal text-[#6f7894] ml-2">Grupos y comunidades de Telegram en español para México, Argentina, Colombia y toda Latinoamérica.</span></div>
-            <div className="flex flex-wrap gap-5 text-sm text-[#66718d]"><Link href="/grupos">Explorar</Link><Link href="/agregar">Agregar grupo</Link><Link href="/buscar">Buscar</Link></div>
-          </div>
-        </footer>
       </div>
     </>
   )
