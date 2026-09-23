@@ -1,103 +1,51 @@
 import Link from 'next/link'
-
 type Category = { emoji: string; name: string; count: string; slug: string }
-type Group = {
-  name: string
-  category: string
-  members: string
-  trending?: boolean
-  photo_url?: string | null
-  username?: string | null
-  link?: string
-}
 
-function photoSrc(group: Group): string | null {
-  if (group.photo_url) return `/api/photo?url=${encodeURIComponent(group.photo_url)}`
-  if (group.username) return `/api/photo?username=${encodeURIComponent(group.username)}`
-  if (group.link && group.link !== '#') return `/api/photo?link=${encodeURIComponent(group.link)}`
-  return null
-}
-
-const accents = [
-  ['#fff6d8','#8a6900'],
-  ['#efeaff','#604aab'],
-  ['#eaf3ff','#2d63a4'],
-  ['#ffecef','#a5425c'],
-  ['#e9f8ef','#2e7b54'],
-  ['#eef3ff','#365da6'],
-  ['#fff0f5','#a24a68'],
-  ['#e9f7ef','#3c7d5a'],
+const covers = [
+  {bg:'#fff0b8', fg:'#7a5b00'},
+  {bg:'#eee8ff', fg:'#5d49a8'},
+  {bg:'#e9f2ff', fg:'#225fa8'},
+  {bg:'#ffe8ee', fg:'#a33d5a'},
+  {bg:'#e7f7ee', fg:'#2f7c55'},
+  {bg:'#eaf0ff', fg:'#315faa'},
+  {bg:'#fff0f4', fg:'#a44866'},
+  {bg:'#e8f7ef', fg:'#337a58'},
+  {bg:'#f3ecff', fg:'#684fa8'},
+  {bg:'#fff2dd', fg:'#8a5a16'},
+  {bg:'#e8f5f7', fg:'#356d77'},
+  {bg:'#eef1f5', fg:'#53607e'},
 ]
 
-export default function CategoryGrid({ categories, groups = [] }: { categories: Category[]; groups?: Group[] }) {
+function initials(name:string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(w=>w[0]?.toUpperCase())
+    .join('')
+}
+
+export default function CategoryGrid({ categories }: { categories: Category[] }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       {categories.map((cat, i) => {
-        const preview = groups
-          .filter(g => g.category === cat.slug)
-          .sort((a,b) => Number(Boolean(b.trending)) - Number(Boolean(a.trending)))
-          .slice(0,3)
-
-        const [soft, ink] = accents[i % accents.length]
-
+        const cover = covers[i % covers.length]
         return (
-          <Link
-            key={cat.slug}
-            href={`/grupos/${cat.slug}`}
-            className="group bg-white border border-[#e6eaf2] rounded-3xl overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(39,56,95,.10)]"
-          >
-            <div className="p-5 border-b border-[#edf0f5]" style={{background:soft}}>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-syne font-extrabold text-[22px] leading-tight" style={{color:ink}}>{cat.name}</p>
-                  <p className="mt-1 text-xs font-semibold text-[#77829b]">{cat.count} comunidades</p>
-                </div>
-
-                <div className="flex -space-x-2">
-                  {preview.length > 0 ? preview.map((g, idx) => {
-                    const src = photoSrc(g)
-                    return (
-                      <div key={g.name} className="relative w-10 h-10 rounded-full border-2 border-white bg-white shadow-sm overflow-hidden" style={{zIndex:3-idx}}>
-                        {src ? (
-                          <img src={src} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[11px] font-extrabold" style={{color:ink,background:'rgba(255,255,255,.55)'}}>
-                            {g.name.slice(0,2).toUpperCase()}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  }) : (
-                    <div className="w-10 h-10 rounded-full border-2 border-white bg-white/60 flex items-center justify-center text-[11px] font-extrabold" style={{color:ink}}>
-                      {cat.name.slice(0,2).toUpperCase()}
-                    </div>
-                  )}
-                </div>
+          <Link key={cat.slug} href={`/grupos/${cat.slug}`}
+            className="group overflow-hidden bg-white border border-[#e6eaf2] rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(39,56,95,.08)]">
+            <div className="h-20 relative overflow-hidden" style={{background:cover.bg}}>
+              <div className="absolute -right-3 -top-5 w-20 h-20 rounded-full border-[12px] border-white/40" />
+              <div className="absolute right-10 bottom-[-28px] w-16 h-16 rotate-12 rounded-2xl bg-white/25" />
+              <div className="absolute left-4 bottom-3 font-syne font-extrabold text-[22px] tracking-[-1px]" style={{color:cover.fg}}>
+                {initials(cat.name)}
               </div>
             </div>
-
-            <div className="p-5">
-              {preview.length > 0 ? (
-                <div className="space-y-3">
-                  {preview.map((g, idx) => (
-                    <div key={g.name} className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-[#f3f6fb] flex items-center justify-center text-[11px] font-extrabold text-[#53607e]">{idx+1}</div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-bold text-[#182036]">{g.name}</p>
-                        <p className="text-[11px] text-[#8a94ac]">{g.members} miembros</p>
-                      </div>
-                      {g.trending && <span className="text-[10px] font-bold text-[#a66a00] bg-[#fff4cf] px-2 py-1 rounded-full">Trending</span>}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="py-4 text-sm text-[#8a94ac]">Explora las comunidades disponibles en esta categoría.</div>
-              )}
-
-              <div className="mt-5 pt-4 border-t border-[#edf0f5] flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#7d879d]">Ver comunidades</span>
-                <span className="w-8 h-8 rounded-full bg-[#f3f6fb] flex items-center justify-center text-[#1769ff] transition group-hover:bg-[#1769ff] group-hover:text-white">→</span>
+            <div className="p-4 flex items-center gap-3">
+              <div className="min-w-0">
+                <span className="block text-[14px] font-bold text-[#11182d] truncate">{cat.name}</span>
+                <span className="text-[11px] text-[#7f89a3]">{cat.count} grupos</span>
               </div>
+              <span className="ml-auto text-[#95a0b8] group-hover:text-[#1769ff]">›</span>
             </div>
           </Link>
         )
