@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getAllGroups, getAllCategories } from '@/lib/getGroups'
 import GroupCard from '@/components/GroupCard'
 import Navbar from '@/components/Navbar'
+import CategoryIcon from '@/components/CategoryIcon'
 
 export const revalidate = 60
 
@@ -54,7 +55,7 @@ export default async function CategoryPage({ params }: { params: { categoria: st
 
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-4">
-            <span className="w-16 h-16 rounded-2xl bg-white border border-[#e6eaf2] shadow-[0_8px_24px_rgba(39,56,95,.06)] flex items-center justify-center text-4xl">{cat.emoji}</span>
+            <CategoryIcon slug={cat.slug} size="lg" />
             <div>
               <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
                 Grupos de Telegram de <span className="text-[#1769ff]">{cat.name}</span>
@@ -89,7 +90,7 @@ export default async function CategoryPage({ params }: { params: { categoria: st
             </div>
           ) : (
             <div className="text-center py-16 text-[#6f7894]">
-              <p className="text-5xl mb-4">{cat.emoji}</p>
+              <div className="mb-4 flex justify-center"><CategoryIcon slug={cat.slug} size="lg" /></div>
               <p className="mb-4">Pronto habra grupos de {cat.name} disponibles.</p>
               <Link href="/agregar" className="inline-block bg-[#1769ff] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#0d5cef] transition-colors">Agrega el primero →</Link>
             </div>
