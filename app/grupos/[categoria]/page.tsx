@@ -43,13 +43,13 @@ export default async function CategoryPage({ params }: { params: { categoria: st
   const related = categories.filter(c => c.slug !== cat.slug).slice(0, 6)
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
+    <div className="min-h-screen bg-[#f5f7fb] text-[#11182d]" style={{fontFamily:"'DM Sans',sans-serif"}}>
       <Navbar />
-      <div className="max-w-6xl mx-auto px-10 pt-24 pb-24">
-        <nav className="flex items-center gap-2 text-sm text-[#8888aa] mb-8 pt-4">
-          <Link href="/" className="hover:text-[#f0eff8] transition-colors">Inicio</Link><span>/</span>
-          <Link href="/grupos" className="hover:text-[#f0eff8] transition-colors">Grupos</Link><span>/</span>
-          <span className="text-[#f0eff8]">{cat.name}</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-20">
+        <nav className="flex items-center gap-2 text-sm text-[#6f7894] mb-8 pt-4">
+          <Link href="/" className="hover:text-[#11182d] transition-colors">Inicio</Link><span>/</span>
+          <Link href="/grupos" className="hover:text-[#11182d] transition-colors">Grupos</Link><span>/</span>
+          <span className="text-[#11182d]">{cat.name}</span>
         </nav>
 
         <div className="mb-12">
@@ -59,16 +59,16 @@ export default async function CategoryPage({ params }: { params: { categoria: st
               <h1 className="font-syne font-extrabold text-[clamp(28px,4vw,40px)] leading-tight">
                 Grupos de Telegram de <span className="text-[#2AABEE]">{cat.name}</span>
               </h1>
-              <p className="text-[#8888aa] mt-1 text-sm">{catGroups.length} comunidades verificadas en espanol</p>
+              <p className="text-[#6f7894] mt-1 text-sm">{catGroups.length} comunidades verificadas en espanol</p>
             </div>
           </div>
         </div>
 
         {params.categoria === 'fans' && (
-          <div className="mb-12 bg-[#111118] border border-white/[0.07] rounded-2xl p-8">
+          <div className="mb-12 bg-white border border-[#e6eaf2] rounded-2xl p-8">
             <h2 className="font-syne font-bold text-[20px] mb-4">Grupos de Telegram <span className="text-[#2AABEE]">OnlyFans</span> en Espanol</h2>
-            <p className="text-[#8888aa] text-[14px] leading-relaxed mb-4">TGOnly es el directorio mas completo de <strong className="text-[#f0eff8]">grupos de Telegram OnlyFans en espanol</strong>. Encuentra canales de contenido exclusivo de influencers y creadores de LATAM.</p>
-            <p className="text-[#8888aa] text-[14px] leading-relaxed">Nuestros <strong className="text-[#f0eff8]">canales de Telegram Only Fans</strong> incluyen contenido de las creadoras mas populares de habla hispana. Todos los grupos son verificados y activos.</p>
+            <p className="text-[#6f7894] text-[14px] leading-relaxed mb-4">TGOnly es el directorio mas completo de <strong className="text-[#11182d]">grupos de Telegram OnlyFans en espanol</strong>. Encuentra canales de contenido exclusivo de influencers y creadores de LATAM.</p>
+            <p className="text-[#6f7894] text-[14px] leading-relaxed">Nuestros <strong className="text-[#11182d]">canales de Telegram Only Fans</strong> incluyen contenido de las creadoras mas populares de habla hispana. Todos los grupos son verificados y activos.</p>
           </div>
         )}
 
@@ -88,10 +88,10 @@ export default async function CategoryPage({ params }: { params: { categoria: st
               {catGroups.map(g => <GroupCard key={g.name} group={g} />)}
             </div>
           ) : (
-            <div className="text-center py-16 text-[#8888aa]">
+            <div className="text-center py-16 text-[#6f7894]">
               <p className="text-5xl mb-4">{cat.emoji}</p>
               <p className="mb-4">Pronto habra grupos de {cat.name} disponibles.</p>
-              <Link href="/agregar" className="inline-block bg-[#2AABEE] text-black font-bold px-6 py-3 rounded-xl hover:bg-[#1a8fd1] transition-colors">Agrega el primero →</Link>
+              <Link href="/agregar" className="inline-block bg-[#1769ff] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#0d5cef] transition-colors">Agrega el primero →</Link>
             </div>
           )}
         </div>
@@ -101,17 +101,17 @@ export default async function CategoryPage({ params }: { params: { categoria: st
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {related.map(relCat => (
               <Link key={relCat.slug} href={`/grupos/${relCat.slug}`}
-                className="flex flex-col gap-2 bg-[#1c1c27] border border-white/[0.07] rounded-xl p-4 hover:-translate-y-0.5 hover:border-white/[0.12] transition-all">
+                className="flex flex-col gap-2 bg-[#f3f6fb] border border-[#e6eaf2] rounded-xl p-4 hover:-translate-y-0.5 hover:border-[#e0e6ef] transition-all">
                 <span className="text-[22px]">{relCat.emoji}</span>
-                <span className="text-[13px] font-medium text-[#f0eff8]">{relCat.name}</span>
-                <span className="text-[11px] text-[#8888aa]">{relCat.count} grupos</span>
+                <span className="text-[13px] font-medium text-[#11182d]">{relCat.name}</span>
+                <span className="text-[11px] text-[#6f7894]">{relCat.count} grupos</span>
               </Link>
             ))}
           </div>
         </div>
       </div>
-      <footer className="border-t border-white/[0.07] px-10 py-7 flex items-center justify-between text-[13px] text-[#8888aa]">
-        <span className="font-syne font-extrabold text-base text-[#f0eff8]">TG<span className="text-[#2AABEE]">Only</span></span>
+      <footer className="border-t border-[#e6eaf2] px-10 py-7 flex items-center justify-between text-[13px] text-[#6f7894]">
+        <span className="font-syne font-extrabold text-base text-[#11182d]">TG<span className="text-[#2AABEE]">Only</span></span>
         <span>2025 TGOnly · LATAM</span>
       </footer>
     </div>
