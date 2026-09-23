@@ -39,7 +39,7 @@ export default async function GroupPage({ params }: { params: { categoria: strin
   const photoSrc = group.photo_url ? `/api/photo?url=${encodeURIComponent(group.photo_url)}` : group.username ? `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}` : null
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
+    <div className="min-h-screen bg-[#f5f7fb] text-[#11182d]" style={{fontFamily:"'DM Sans',sans-serif"}}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context":"https://schema.org",
         "@graph":[
@@ -72,15 +72,15 @@ export default async function GroupPage({ params }: { params: { categoria: strin
         ]
       })}} />
       <Navbar />
-      <div className="max-w-3xl mx-auto px-6 pt-24 pb-24">
-        <nav className="flex items-center gap-2 text-sm text-[#8888aa] mb-8 pt-4">
-          <Link href="/" className="hover:text-[#f0eff8] transition-colors">Inicio</Link><span>/</span>
-          <Link href="/grupos" className="hover:text-[#f0eff8] transition-colors">Grupos</Link><span>/</span>
-          <Link href={`/grupos/${params.categoria}`} className="hover:text-[#f0eff8] transition-colors">{cat?.name||params.categoria}</Link><span>/</span>
-          <span className="text-[#f0eff8] truncate">{group.name}</span>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-20">
+        <nav className="flex items-center gap-2 text-sm text-[#6f7894] mb-8 pt-4">
+          <Link href="/" className="hover:text-[#11182d] transition-colors">Inicio</Link><span>/</span>
+          <Link href="/grupos" className="hover:text-[#11182d] transition-colors">Grupos</Link><span>/</span>
+          <Link href={`/grupos/${params.categoria}`} className="hover:text-[#11182d] transition-colors">{cat?.name||params.categoria}</Link><span>/</span>
+          <span className="text-[#11182d] truncate">{group.name}</span>
         </nav>
 
-        <div className="bg-[#111118] border border-white/[0.07] rounded-2xl p-8 mb-8">
+        <div className="bg-white border border-[#e6eaf2] rounded-3xl p-6 sm:p-8 mb-5 shadow-[0_12px_32px_rgba(39,56,95,.06)]">
           <div className="flex items-start gap-5 mb-6">
             <div className="relative flex-shrink-0" style={{width:80,height:80}}>
               <div className="absolute inset-0 rounded-2xl bg-[#2AABEE]/10 flex items-center justify-center text-4xl">{group.emoji}</div>
@@ -88,41 +88,41 @@ export default async function GroupPage({ params }: { params: { categoria: strin
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-2">
-                <h1 className="font-syne font-extrabold text-[24px] text-[#f0eff8]">{group.name}</h1>
+                <h1 className="font-syne font-extrabold text-[24px] text-[#11182d]">{group.name}</h1>
                 {group.verified && <span className="w-5 h-5 bg-[#2AABEE] rounded-full flex items-center justify-center text-[10px] font-bold text-black flex-shrink-0">✓</span>}
                 {group.trending && <span className="text-[11px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/25 rounded px-2 py-0.5">🔥 Trending</span>}
               </div>
-              <div className="flex items-center gap-4 text-sm text-[#8888aa]">
-                <span className="text-[#3dd68c] font-semibold font-syne text-base">{group.members} miembros</span>
+              <div className="flex items-center gap-4 text-sm text-[#6f7894]">
+                <span className="text-[#1769ff] font-semibold font-syne text-base">{group.members} miembros</span>
                 <span className="capitalize">{cat?.name||params.categoria}</span>
               </div>
             </div>
           </div>
 
-          {group.desc && <p className="text-[#8888aa] leading-relaxed mb-6 text-[15px]">{group.desc}</p>}
+          {group.desc && <p className="text-[#6f7894] leading-relaxed mb-6 text-[15px]">{group.desc}</p>}
 
           {group.tags.length > 0 && (
             <div className="flex gap-2 flex-wrap mb-8">
-              {group.tags.map(t=><span key={t} className="text-[12px] text-[#8888aa] bg-[#1c1c27] border border-white/[0.07] rounded-lg px-3 py-1">#{t}</span>)}
+              {group.tags.map(t=><span key={t} className="text-[12px] text-[#6f7894] bg-[#f3f6fb] border border-[#e6eaf2] rounded-lg px-3 py-1">#{t}</span>)}
             </div>
           )}
 
           <a href={group.link} target="_blank" rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-3 bg-[#2AABEE] text-black font-bold text-[16px] py-4 rounded-xl hover:bg-[#1a8fd1] transition-all hover:scale-[1.01] shadow-[0_0_20px_rgba(42,171,238,0.3)]">
+            className="w-full flex items-center justify-center gap-3 bg-[#1769ff] text-white font-bold text-[16px] py-4 rounded-xl hover:bg-[#0d5cef] transition-all hover:scale-[1.01] shadow-[0_10px_24px_rgba(23,105,255,.18)]">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.829.94z"/></svg>
             Unirme gratis en Telegram
           </a>
         </div>
 
-        <section className="bg-[#111118] border border-white/[0.07] rounded-2xl p-7 mb-8">
+        <section className="bg-white border border-[#e6eaf2] rounded-3xl p-6 sm:p-8 mb-5 shadow-[0_12px_32px_rgba(39,56,95,.05)]">
           <h2 className="font-syne font-bold text-[18px] mb-3">{group.name} en Telegram</h2>
-          <p className="text-[#8888aa] text-[14px] leading-relaxed mb-4">
-            Esta página reúne la información disponible en TGOnly para encontrar <strong className="text-[#f0eff8]">{group.name} Telegram</strong>.
+          <p className="text-[#6f7894] text-[14px] leading-relaxed mb-4">
+            Esta página reúne la información disponible en TGOnly para encontrar <strong className="text-[#11182d]">{group.name} Telegram</strong>.
             Puedes usar el enlace principal de arriba para abrir la comunidad relacionada directamente en Telegram.
           </p>
           <div className="flex flex-wrap gap-2">
             {[group.name + ' telegram', 'telegram ' + group.name, 'grupo telegram ' + group.name, 'canal telegram ' + group.name].map(q => (
-              <span key={q} className="text-[12px] text-[#8888aa] bg-[#1c1c27] border border-white/[0.07] rounded-lg px-3 py-1.5">{q}</span>
+              <span key={q} className="text-[12px] text-[#6f7894] bg-[#f3f6fb] border border-[#e6eaf2] rounded-lg px-3 py-1.5">{q}</span>
             ))}
           </div>
         </section>
@@ -130,21 +130,21 @@ export default async function GroupPage({ params }: { params: { categoria: strin
         {related.length > 0 && (
           <div>
             <h2 className="font-syne font-bold text-[18px] mb-4">Grupos similares en {cat?.name}</h2>
-            <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {related.map(g => {
                 const rPhotoSrc = g.photo_url ? `/api/photo?url=${encodeURIComponent(g.photo_url)}` : g.username ? `/api/photo?username=${g.username}` : null
                 return (
                   <Link key={g.name} href={`/grupos/${g.category}/${slugify(g.name)}`}
-                    className="flex items-center gap-4 bg-[#111118] border border-white/[0.07] rounded-xl p-4 hover:border-[#2AABEE]/30 transition-all">
+                    className="flex items-center gap-4 bg-white border border-[#e6eaf2] rounded-2xl p-4 hover:border-[#2AABEE]/30 transition-all">
                     <div className="relative flex-shrink-0" style={{width:44,height:44}}>
                       <div className="absolute inset-0 rounded-xl bg-[#2AABEE]/10 flex items-center justify-center text-xl">{g.emoji}</div>
                       {rPhotoSrc && <img src={rPhotoSrc} alt={g.name} width={44} height={44} className="absolute inset-0 rounded-xl object-cover w-full h-full" style={{zIndex:1}} />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-syne font-bold text-[14px] text-[#f0eff8] truncate">{g.name}</p>
-                      <p className="text-[12px] text-[#3dd68c] font-semibold">{g.members} miembros</p>
+                      <p className="font-syne font-bold text-[14px] text-[#11182d] truncate">{g.name}</p>
+                      <p className="text-[12px] text-[#1769ff] font-semibold">{g.members} miembros</p>
                     </div>
-                    <svg className="text-[#8888aa]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                    <svg className="text-[#6f7894]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
                   </Link>
                 )
               })}
@@ -152,8 +152,8 @@ export default async function GroupPage({ params }: { params: { categoria: strin
           </div>
         )}
       </div>
-      <footer className="border-t border-white/[0.07] px-10 py-7 flex items-center justify-between text-[13px] text-[#8888aa]">
-        <span className="font-syne font-extrabold text-base text-[#f0eff8]">TG<span className="text-[#2AABEE]">Only</span></span>
+      <footer className="max-w-5xl mx-auto border-t border-[#e6eaf2] px-4 sm:px-6 lg:px-10 py-7 flex items-center justify-between text-[13px] text-[#6f7894]">
+        <span className="font-syne font-extrabold text-base text-[#11182d]">TG<span className="text-[#2AABEE]">Only</span></span>
         <span>2025 TGOnly · LATAM</span>
       </footer>
     </div>
