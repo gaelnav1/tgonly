@@ -1,7 +1,7 @@
 // ✅ SIN 'use client' — Server Component para máximo SEO
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { categories, groups } from '@/data/groups'
+import { getAllCategories, getAllGroups } from '@/lib/getGroups'
 import CategoryGrid from '@/components/CategoryGrid'
 import GroupCard from '@/components/GroupCard'
 import SearchBar from '@/components/SearchBar'  // Client component separado
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 }
 
 // ✅ Schema JSON-LD para la homepage (ItemList + WebSite)
-function HomeSchema() {
+function HomeSchema({ categories }: { categories: Awaited<ReturnType<typeof getAllCategories>> }) {
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -72,12 +72,13 @@ function HomeSchema() {
   )
 }
 
-export default function Home() {
+export default async function Home() {
+  const [categories, groups] = await Promise.all([getAllCategories(), getAllGroups()])
   const trendingGroups = groups.filter(g => g.trending)
 
   return (
     <>
-      <HomeSchema />
+      <HomeSchema categories={categories} />
 
       <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
