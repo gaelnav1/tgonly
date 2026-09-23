@@ -18,10 +18,6 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2">
             <Link href="/buscar" aria-label="Buscar" className="md:hidden w-9 h-9 rounded-xl border border-[#e6eaf2] flex items-center justify-center text-[#1769ff]">⌕</Link>
-            <div className="hidden sm:flex items-center gap-2 bg-[#f6f8fc] border border-[#e6eaf2] rounded-xl py-1.5 pl-1.5 pr-3">
-              <div className="w-8 h-8 rounded-lg bg-[#dce7ff] flex items-center justify-center text-xs font-bold text-[#1769ff]">TG</div>
-              <span className="text-sm font-semibold text-[#34405f]">TGOnly</span>
-            </div>
           </div>
         </div>
       </div>
