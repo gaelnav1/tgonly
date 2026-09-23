@@ -100,9 +100,16 @@ export default async function Home() {
                   <SearchBar />
                 </div>
 
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {['Todas','Populares','Nuevas','Verificadas'].map((t,i)=>(
-                    <span key={t} className={`rounded-full px-4 py-2 text-xs font-bold ${i===0?'bg-[#1769ff] text-white':'bg-[#edf2fa] text-[#68738e]'}`}>{t}</span>
+                <div className="flex flex-wrap gap-2 mt-4 items-center">
+                  <span className="text-xs font-semibold text-[#8a94ac] mr-1">Explora:</span>
+                  {categories.slice(0,6).map(cat => (
+                    <Link
+                      key={cat.slug}
+                      href={`/grupos/${cat.slug}`}
+                      className="rounded-full bg-[#edf2fa] px-3.5 py-2 text-xs font-bold text-[#5f6c89] transition hover:bg-[#e4ecf8] hover:text-[#1769ff]"
+                    >
+                      #{cat.name.replace(/\s+/g,'')}
+                    </Link>
                   ))}
                 </div>
               </div>
