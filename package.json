@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "import": "tsx scripts/import-groups.ts",
-    "import:onlysearch": "tsx scripts/import-onlysearch.ts"
+    "import:onlysearch": "tsx scripts/import-onlysearch.ts",
+    "normalize:onlysearch": "tsx scripts/normalize-onlysearch.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
