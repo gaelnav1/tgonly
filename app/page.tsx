@@ -137,7 +137,7 @@ export default async function Home() {
               <div><h2 className="font-syne font-extrabold text-[24px]">Explora por categoría</h2><p className="text-sm text-[#7b86a1] mt-1">Encuentra comunidades por tema.</p></div>
               <Link href="/grupos" className="text-[#1769ff] text-sm font-bold">Ver todas →</Link>
             </div>
-            <CategoryGrid categories={categories.slice(0,8)} groups={groups} />
+            <CategoryGrid categories={categories.slice(0,8)} />
           </section>
 
           <section id="trending" className="tg-surface p-6 sm:p-8 mb-5">
