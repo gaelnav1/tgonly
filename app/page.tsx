@@ -84,37 +84,37 @@ export default async function Home() {
         <Navbar />
 
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pt-28 pb-10">
-          <section className="tg-surface p-6 sm:p-8 lg:p-10 mb-5 overflow-hidden">
-            <div className="grid lg:grid-cols-[1.08fr_.92fr] gap-8 items-stretch">
-              <div>
+          <section className="tg-surface p-6 sm:p-8 lg:p-9 mb-5 overflow-hidden">
+            <div className="grid lg:grid-cols-[minmax(0,1.55fr)_minmax(360px,.95fr)] gap-6 lg:gap-7 items-stretch">
+              <div className="flex flex-col justify-center py-1">
                 <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[#1769ff] mb-3">Comunidades que te conectan</p>
-                <h1 className="font-syne font-extrabold text-[clamp(40px,6vw,64px)] leading-[1.02] tracking-[-2px] mb-4">
+                <h1 className="font-syne font-extrabold text-[clamp(38px,4.6vw,58px)] leading-[1.01] tracking-[-1.6px] mb-4 max-w-[760px]">
                   Explora comunidades<br/>por <span className="text-[#1769ff]">categoría</span>
                 </h1>
-                <p className="text-[#6f7894] text-base sm:text-lg max-w-2xl mb-6">
+                <p className="text-[#6f7894] text-[15px] sm:text-base max-w-[690px] mb-5 leading-relaxed">
                   Descubre grupos de Telegram sobre tus temas favoritos. Encuentra comunidades reales, activas y organizadas en un solo lugar.
                 </p>
 
-                <div className="max-w-2xl">
+                <div className="max-w-[720px]">
                   <SearchBar />
                 </div>
 
-                <div className="flex flex-wrap gap-2 mt-5">
+                <div className="flex flex-wrap gap-2 mt-4">
                   {['Todas','Populares','Nuevas','Verificadas'].map((t,i)=>(
                     <span key={t} className={`rounded-full px-4 py-2 text-xs font-bold ${i===0?'bg-[#1769ff] text-white':'bg-[#edf2fa] text-[#68738e]'}`}>{t}</span>
                   ))}
                 </div>
               </div>
 
-              <div className="relative min-h-[300px] rounded-[34px] bg-[#fff5cf] overflow-hidden p-8">
-                <div className="relative z-10 max-w-[220px]">
-                  <h2 className="font-syne font-extrabold text-[28px] leading-tight">Conecta con<br/>lo que te interesa</h2>
-                  <p className="text-[#6f7894] mt-3 text-sm leading-relaxed">Miles de comunidades reales en un solo lugar.<br/>Explora. Únete. Crece.</p>
-                  <div className="w-10 h-1.5 rounded-full bg-[#ffd91a] mt-5"/>
+              <div className="relative min-h-[265px] rounded-[30px] bg-[#fff5cf] overflow-hidden p-7">
+                <div className="relative z-10 max-w-[48%]">
+                  <h2 className="font-syne font-extrabold text-[22px] leading-[1.06]">Conecta con<br/>lo que te interesa</h2>
+                  <p className="text-[#6f7894] mt-3 text-[13px] leading-relaxed">Miles de comunidades reales en un solo lugar.<br/>Explora. Únete. Crece.</p>
+                  <div className="w-10 h-1.5 rounded-full bg-[#ffd91a] mt-4"/>
                 </div>
-                <div className="absolute right-7 top-12 w-44 h-44 rounded-[34px] bg-[#e7efff] rotate-[-7deg] flex items-center justify-center text-[86px] text-[#1769ff] shadow-sm">➤</div>
-                <div className="absolute right-4 bottom-7 rounded-2xl bg-white shadow-[0_10px_28px_rgba(39,56,95,.10)] px-4 py-3 text-sm font-bold text-[#34405f]">👥 Comunidades reales</div>
-                <div className="absolute right-8 top-4 text-[#f1c900] text-3xl font-black">〃</div>
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 w-[45%] aspect-square max-w-[170px] rounded-[30px] bg-[#e7efff] rotate-[-7deg] flex items-center justify-center text-[70px] text-[#1769ff] shadow-sm">➤</div>
+                <div className="absolute right-5 bottom-5 rounded-2xl bg-white shadow-[0_10px_28px_rgba(39,56,95,.10)] px-3.5 py-2.5 text-[12px] font-bold text-[#34405f]">👥 Comunidades reales</div>
+                <div className="absolute right-7 top-4 text-[#f1c900] text-2xl font-black">〃</div>
               </div>
             </div>
           </section>
