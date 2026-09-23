@@ -53,7 +53,7 @@ export default async function GroupPage({ params }: { params: { categoria: strin
             "isPartOf":{"@id":"https://telegramonly.com/#website"},
             "about":{"@type":"Thing","name":group.name},
             "mainEntity":{
-              "@type":"OnlineCommunity",
+              "@type":"WebPage",
               "name":group.name,
               "url":group.link,
               ...(group.username ? {"alternateName":`@${group.username.replace(/^@/,'')}`} : {})
