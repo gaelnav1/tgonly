@@ -1,15 +1,15 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { categories as staticCategories } from '@/data/groups'
-import { getAllGroups } from '@/lib/getGroups'
+import { getAllGroups, getAllCategories } from '@/lib/getGroups'
 import GroupCard from '@/components/GroupCard'
 import Navbar from '@/components/Navbar'
 
 export const revalidate = 60
 
 export async function generateStaticParams() {
-  return staticCategories.map(cat => ({ categoria: cat.slug }))
+  const categories = await getAllCategories()
+  return categories.map(cat => ({ categoria: cat.slug }))
 }
 
 const CATEGORY_SEO: Record<string, { title: string; description: string; keywords: string }> = {
@@ -21,7 +21,8 @@ const CATEGORY_SEO: Record<string, { title: string; description: string; keyword
 }
 
 export async function generateMetadata({ params }: { params: { categoria: string } }): Promise<Metadata> {
-  const cat = staticCategories.find(c => c.slug === params.categoria)
+  const categories = await getAllCategories()
+  const cat = categories.find(c => c.slug === params.categoria)
   if (!cat) return {}
   const seo = CATEGORY_SEO[params.categoria]
   return {
@@ -33,13 +34,13 @@ export async function generateMetadata({ params }: { params: { categoria: string
 }
 
 export default async function CategoryPage({ params }: { params: { categoria: string } }) {
-  const cat = staticCategories.find(c => c.slug === params.categoria)
+  const [allGroups, categories] = await Promise.all([getAllGroups(), getAllCategories()])
+  const cat = categories.find(c => c.slug === params.categoria)
   if (!cat) notFound()
 
-  const allGroups = await getAllGroups()
   const catGroups = allGroups.filter(g => g.category === cat.slug)
   const trendingInCat = catGroups.filter(g => g.trending)
-  const related = staticCategories.filter(c => c.slug !== cat.slug).slice(0, 6)
+  const related = categories.filter(c => c.slug !== cat.slug).slice(0, 6)
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
