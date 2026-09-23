@@ -37,29 +37,13 @@ function getPhotoSrc(g:any) {
 
 function PlaneIllustration() {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-[28px] bg-[#FFF4C9]">
-      <div className="absolute left-6 top-6 z-20 max-w-[178px]">
-        <div className="font-syne text-[24px] font-extrabold leading-[1.08] tracking-[-.5px] text-[#11182d]">
-          Personas reales<br/>Conversaciones<br/>que inspiran
-        </div>
-        <div className="mt-4 h-[6px] w-10 rounded-full bg-[#F4C400]" />
-      </div>
-
+    <div className="h-full w-full overflow-hidden rounded-t-[28px]">
       <img
-        src="/illustrations/telegram-community-card.svg"
+        src="/illustrations/detail-community-reference-correct.webp"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute right-[-48px] top-[-8px] h-[250px] w-[430px] max-w-none object-contain"
+        className="block h-full w-full object-cover"
       />
-
-      <div className="absolute bottom-[58px] right-8 z-20 rotate-[-6deg] text-[13px] italic leading-tight text-[#66718d]">
-        La vida es mejor<br/>en comunidad ♡
-      </div>
-
-      <div className="absolute right-8 top-4 z-20 flex gap-2">
-        <span className="block h-8 w-[6px] rotate-[15deg] rounded-full bg-[#F4C400]" />
-        <span className="mt-3 block h-6 w-[6px] rotate-[45deg] rounded-full bg-[#F4C400]" />
-      </div>
     </div>
   )
 }
@@ -164,9 +148,11 @@ export default async function GroupPage({ params }: { params: { categoria: strin
               </div>
             </div>
 
-            <div className="relative min-h-[230px]">
-              <PlaneIllustration />
-              <div className="absolute bottom-4 left-4 right-4 z-30">
+            <div className="overflow-hidden rounded-[28px] bg-[#FFF4C9]">
+              <div className="aspect-[336/199] w-full">
+                <PlaneIllustration />
+              </div>
+              <div className="px-4 pb-4 pt-2">
                 <a href={group.link} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 rounded-[14px] bg-[#1769ff] py-3.5 text-[14px] font-bold text-white shadow-[0_10px_24px_rgba(23,105,255,.24)] transition hover:bg-[#0d5cef]">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z"/></svg>
                   Abrir en Telegram ↗
