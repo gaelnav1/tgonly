@@ -11,6 +11,7 @@ function slugify(name: string) {
 function getPhotoSrc(group: Group): string | null {
   const idParam = group.id ? `&id=${group.id}` : ''
   const linkParam = group.link && group.link !== '#' ? `&link=${encodeURIComponent(group.link)}` : ''
+  if (group.photo_url?.startsWith('/api/photo?chat_id=')) return group.photo_url
   if (group.photo_url) return `/api/photo?url=${encodeURIComponent(group.photo_url)}${idParam}${linkParam}`
   if (group.username) return `/api/photo?username=${group.username}${idParam}${linkParam}`
   if (group.link && group.link !== '#') return `/api/photo?link=${encodeURIComponent(group.link)}${idParam}`

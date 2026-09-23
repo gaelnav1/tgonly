@@ -6,6 +6,8 @@ frontend:
         - npm ci --cache .npm --prefer-offline
     build:
       commands:
+        - test -n "$SUPABASE_URL" && test -n "$SUPABASE_SERVICE_ROLE_KEY" && test -n "$ADMIN_PASSWORD" && test -n "$TELEGRAM_BOT_TOKEN"
+        - printf 'SUPABASE_URL=%s\nSUPABASE_SERVICE_ROLE_KEY=%s\nADMIN_PASSWORD=%s\nTELEGRAM_BOT_TOKEN=%s\n' "$SUPABASE_URL" "$SUPABASE_SERVICE_ROLE_KEY" "$ADMIN_PASSWORD" "$TELEGRAM_BOT_TOKEN" > .env.production
         - npm run build
   artifacts:
     baseDirectory: .next

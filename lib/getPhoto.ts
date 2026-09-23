@@ -1,4 +1,5 @@
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8645667047:AAGHw3-Ig_F830J-e3fpFdP71h7m2yGQbSw'
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
+import { safePhotoUrl } from './photoUrl'
 
 export type PhotoResult = { photoUrl: string; username?: string; method: string }
 
@@ -7,10 +8,7 @@ async function tryBotApi(chatId: string, username?: string): Promise<PhotoResult
     const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=${chatId}`)
     const data = await res.json()
     if (!data.ok || !data.result.photo) return null
-    const fRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${data.result.photo.big_file_id}`)
-    const fData = await fRes.json()
-    if (!fData.ok) return null
-    return { photoUrl: `https://api.telegram.org/file/bot${BOT_TOKEN}/${fData.result.file_path}`, username, method: `bot_api:${chatId}` }
+    return { photoUrl: `/api/photo?chat_id=${encodeURIComponent(String(data.result.id))}`, username, method: `bot_api:${chatId}` }
   } catch { return null }
 }
 
@@ -19,7 +17,8 @@ async function tryScraping(url: string): Promise<PhotoResult | null> {
     const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)' } })
     const html = await res.text()
     const m = html.match(/<meta property="og:image" content="([^"]+)"/)
-    if (m?.[1]) return { photoUrl: m[1], method: `scraping:${url}` }
+    const photoUrl = safePhotoUrl(m?.[1])
+    if (photoUrl) return { photoUrl, method: `scraping:${url}` }
   } catch {}
   return null
 }

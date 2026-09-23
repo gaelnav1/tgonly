@@ -1,20 +1,35 @@
+import { supabaseHeaders } from '@/lib/supabaseHeaders'
 import { NextRequest, NextResponse } from 'next/server'
-const SUPABASE_URL = 'https://kftdlkakcuyexifdhlnr.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmdGRsa2FrY3V5ZXhpZmRobG5yIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjczMTA3NywiZXhwIjoyMDkyMzA3MDc3fQ.ZN1H9KVv-P5262g6gCGHv4f7_HVjr--jEwMFsqdcBBw'
-const ADMIN_PASSWORD = 'Gamadiel21'
-const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
-function auth(req: NextRequest) { return req.headers.get('x-admin-password') === ADMIN_PASSWORD }
+import { safePhotoUrl } from '@/lib/photoUrl'
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
+const h = { ...supabaseHeaders(SUPABASE_KEY), 'Content-Type': 'application/json' }
+function auth(req: NextRequest) { return Boolean(ADMIN_PASSWORD) && req.headers.get('x-admin-password') === ADMIN_PASSWORD }
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+  if (!SUPABASE_KEY || !SUPABASE_URL) return NextResponse.json({ error: 'Falta configurar Supabase en el servidor' }, { status: 503 })
   const category = req.nextUrl.searchParams.get('category')||''
   const search = req.nextUrl.searchParams.get('search')||''
-  let url = `${SUPABASE_URL}/rest/v1/groups?select=*&order=score.desc,created_at.desc&limit=200`
-  if (category) url += `&category=eq.${category}`
-  const res = await fetch(url, { headers: h })
-  let data = await res.json()
-  if (!Array.isArray(data)) return NextResponse.json([])
-  if (search) { const q = search.toLowerCase(); data = data.filter((g:any) => g.name?.toLowerCase().includes(q)||g.description?.toLowerCase().includes(q)) }
-  return NextResponse.json(data)
+  try {
+    const url = new URL('/rest/v1/groups', SUPABASE_URL)
+    url.searchParams.set('select', '*')
+    url.searchParams.set('order', 'score.desc,created_at.desc')
+    url.searchParams.set('limit', '200')
+    if (category) url.searchParams.set('category', `eq.${category}`)
+    const res = await fetch(url, { headers: h, cache: 'no-store' })
+    if (!res.ok) {
+      console.error('Admin groups: Supabase returned', res.status)
+      return NextResponse.json({ error: 'No se pudo consultar Supabase' }, { status: 502 })
+    }
+    let data = await res.json()
+    if (!Array.isArray(data)) return NextResponse.json({ error: 'Respuesta inesperada de Supabase' }, { status: 502 })
+    if (search) { const q = search.toLowerCase(); data = data.filter((g:any) => g.name?.toLowerCase().includes(q)||g.description?.toLowerCase().includes(q)) }
+    return NextResponse.json(data.map((group: any) => ({ ...group, photo_url: safePhotoUrl(group.photo_url) })))
+  } catch (error) {
+    console.error('Admin groups: Supabase request failed', error)
+    return NextResponse.json({ error: 'No se pudo conectar con Supabase' }, { status: 503 })
+  }
 }
 export async function PATCH(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -22,7 +37,7 @@ export async function PATCH(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
   const allowed = ['name','description','tags','link','members','category','verified','trending','score','photo_url','emoji','color']
   const update: any = {}
-  for (const k of allowed) { if (fields[k] !== undefined) update[k] = fields[k] }
+  for (const k of allowed) { if (fields[k] !== undefined) update[k] = k === 'photo_url' ? safePhotoUrl(fields[k]) : fields[k] }
   const res = await fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${id}`, { method:'PATCH', headers:{...h,'Prefer':'return=representation'}, body:JSON.stringify(update) })
   if (!res.ok) return NextResponse.json({ error: await res.text() }, { status: 500 })
   return NextResponse.json({ ok: true })

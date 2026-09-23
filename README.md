@@ -2,6 +2,12 @@
 
 ## Setup rápido
 
+### Variables de servidor
+
+Copia `.env.example` a `.env.local` para desarrollo. Configura `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD` y `TELEGRAM_BOT_TOKEN`. Para `SUPABASE_SERVICE_ROLE_KEY` usa una clave **secret** nueva (`sb_secret_...`) de Settings → API Keys; el nombre de la variable se conserva por compatibilidad. No publiques sus valores en Git. Tras comprobar el despliegue, desactiva la clave legacy `service_role` expuesta.
+
+En AWS Amplify, añade esas cuatro variables a la configuración de la rama `master` antes de desplegar. `amplify.yml` las incorpora al entorno del servidor Next.js durante el build y falla si falta alguna. Cambia las credenciales expuestas en el historial de Git antes de usarlas en producción.
+
 ### 1. Instala dependencias
 ```bash
 npm install

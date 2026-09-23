@@ -1,13 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8645667047:AAGHw3-Ig_F830J-e3fpFdP71h7m2yGQbSw'
-async function getPhotoUrl(fileId: string): Promise<string|null> {
-  try {
-    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`)
-    const data = await res.json()
-    if (data.ok) return `https://api.telegram.org/file/bot${BOT_TOKEN}/${data.result.file_path}`
-    return null
-  } catch { return null }
-}
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
 export async function POST(req: NextRequest) {
   try {
     const { link } = await req.json()
@@ -20,7 +12,7 @@ export async function POST(req: NextRequest) {
         const chatRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=${encodeURIComponent(previewUrl)}`)
         const chatData = await chatRes.json()
         if (chatData.ok) {
-          const photoUrl = chatData.result.photo ? await getPhotoUrl(chatData.result.photo.big_file_id) : null
+          const photoUrl = chatData.result.photo ? `/api/photo?chat_id=${chatData.result.id}` : null
           const countRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChatMemberCount?chat_id=${chatData.result.id}`)
           const countData = await countRes.json()
           return NextResponse.json({ ok: true, group: { name: chatData.result.title, username: null, description: chatData.result.description||'', members: countData.ok?countData.result:0, photo_url: photoUrl, type: 'private', link: previewUrl } })
@@ -42,7 +34,7 @@ export async function POST(req: NextRequest) {
       const chatRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChat?chat_id=@${username}`)
       const chatData = await chatRes.json()
       if (chatData.ok) {
-        const photoUrl = chatData.result.photo ? await getPhotoUrl(chatData.result.photo.big_file_id) : null
+        const photoUrl = chatData.result.photo ? `/api/photo?chat_id=${chatData.result.id}` : null
         const countRes = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getChatMemberCount?chat_id=@${username}`)
         const countData = await countRes.json()
         return NextResponse.json({ ok: true, group: { name: chatData.result.title, username, description: chatData.result.description||'', members: countData.ok?countData.result:0, photo_url: photoUrl, type: chatData.result.type, link: `https://t.me/${username}` } })
