@@ -132,19 +132,29 @@ export default async function GroupPage({ params }: { params: { categoria: strin
               </div>
             </div>
 
-            <div className="relative rounded-[28px] bg-[#fff5cf] min-h-[230px] overflow-hidden p-6 flex flex-col justify-between">
-              <div className="relative z-10 max-w-[210px]">
-                <h2 className="font-syne font-extrabold text-[24px] leading-[1.05]">Personas reales<br/>Conversaciones<br/>que inspiran</h2>
+            <div className="relative rounded-[28px] bg-[#fff5cf] min-h-[270px] overflow-hidden p-6">
+              <div className="relative z-20 max-w-[230px]">
+                <h2 className="font-syne font-extrabold text-[24px] leading-[1.06] tracking-[-.4px]">
+                  Personas reales<br/>Conversaciones<br/>que inspiran
+                </h2>
                 <div className="w-10 h-1.5 rounded-full bg-[#f4c400] mt-4"/>
               </div>
 
-              <div className="absolute right-5 top-8 w-[150px] h-[150px] rounded-[30px] bg-[#e7eeff] rotate-[-8deg] flex items-center justify-center text-[#1769ff] shadow-sm">
-                <svg width="72" height="72" viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z"/></svg>
-              </div>
+              <img
+                src="/illustrations/telegram-community-card.svg"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute right-[-28px] top-[-10px] h-[285px] w-[490px] max-w-none object-contain"
+              />
 
-              <a href={group.link} target="_blank" rel="noopener noreferrer" className="relative z-10 mt-auto tg-primary w-full py-3.5 text-center text-sm font-bold">
-                Abrir en Telegram ↗
-              </a>
+              <div className="absolute bottom-5 left-6 right-6 z-30">
+                <a href={group.link} target="_blank" rel="noopener noreferrer" className="tg-primary flex w-full items-center justify-center gap-2 py-3.5 text-sm font-bold">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z"/>
+                  </svg>
+                  Abrir en Telegram ↗
+                </a>
+              </div>
             </div>
           </div>
         </section>
