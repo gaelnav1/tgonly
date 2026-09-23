@@ -160,6 +160,21 @@ export default async function Home() {
               {[['🔎','Descubre rápido'],['🛡️','Grupos verificados'],['👥','Más comunidades'],['⚡','Siempre actualizado']].map(([i,t],idx)=><div key={t} className="rounded-2xl border border-[#e6eaf2] p-4 bg-[#f9fbff]"><div className="w-10 h-10 rounded-xl bg-[#edf4ff] flex items-center justify-center mb-3">{i}</div><p className="font-bold text-sm">{t}</p></div>)}
             </div>
           </section>
+
+          <section className="tg-surface p-7 sm:p-10 mb-5 text-center">
+            <h2 className="font-syne font-extrabold text-[24px] sm:text-[28px] mb-4">Telegram en español para toda Latinoamérica</h2>
+            <p className="text-[#6f7894] leading-relaxed max-w-3xl mx-auto mb-4">
+              TGOnly reúne grupos y comunidades de Telegram en español para usuarios de México, Argentina, Colombia, Chile, Perú y el resto de Latinoamérica.
+            </p>
+            <p className="text-[#6f7894] leading-relaxed max-w-3xl mx-auto">
+              Desde comunidades de <Link href="/grupos/cripto" className="text-[#1769ff] font-semibold hover:underline">cripto y trading</Link>,
+              hasta <Link href="/grupos/tech" className="text-[#1769ff] font-semibold hover:underline">tecnología e IA</Link>,
+              <Link href="/grupos/gaming" className="text-[#1769ff] font-semibold hover:underline"> gaming</Link>,
+              <Link href="/grupos/noticias" className="text-[#1769ff] font-semibold hover:underline"> noticias</Link>,
+              <Link href="/grupos/trabajos-latam" className="text-[#1769ff] font-semibold hover:underline"> trabajos</Link> y más.
+            </p>
+          </section>
+
         </main>
 
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pb-8">
