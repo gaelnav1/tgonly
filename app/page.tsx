@@ -129,19 +129,16 @@ export default async function Home() {
             </div>
           )}
 
-          <div className="relative grid grid-cols-3 gap-6 sm:gap-12 mt-10 pt-8 border-t border-white/[0.07]">
-            <div>
-              <span className="block font-syne font-bold text-xl sm:text-2xl">{groups.length}</span>
-              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Comunidades</span>
-            </div>
-            <div>
-              <span className="block font-syne font-bold text-xl sm:text-2xl">{categories.length}</span>
-              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Categorías</span>
-            </div>
-            <div>
-              <span className="block font-syne font-bold text-xl sm:text-2xl">{totalMembers.toLocaleString('es-MX')}</span>
-              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Miembros registrados</span>
-            </div>
+          <div className="relative flex flex-wrap items-center justify-center gap-x-7 gap-y-4 sm:gap-x-10 mt-10 pt-8 border-t border-white/[0.07]">
+            {[['12,400+','Grupos'],['48M+','Miembros'],['38','Categorías'],['100%','Verificados']].map(([n,l], i) => (
+              <div key={l} className="flex items-center gap-7 sm:gap-10">
+                {i > 0 && <div className="hidden sm:block w-px h-8 bg-white/[0.10]" />}
+                <div className="text-center min-w-[80px]">
+                  <span className="block font-syne font-bold text-[22px] sm:text-[26px]">{n}</span>
+                  <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">{l}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
