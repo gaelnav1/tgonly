@@ -1,0 +1,31 @@
+<svg width="620" height="360" viewBox="0 0 620 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="15" flood-color="#7180A6" flood-opacity=".18"/>
+    </filter>
+    <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#42A5FF"/>
+      <stop offset="1" stop-color="#1769FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tilted blue tile -->
+  <g transform="translate(277 50) rotate(-8 128 128)" filter="url(#shadow)">
+    <rect width="256" height="256" rx="44" fill="#E8EEFF"/>
+  </g>
+
+  <!-- Telegram plane, deliberately large and slightly asymmetric -->
+  <g transform="translate(340 112) rotate(-7)">
+    <path d="M139 8L11 57C2 60 2 67 10 70L45 81L58 121C60 126 61 128 66 128C70 128 72 126 75 123L92 107L127 132C133 136 139 133 141 126L164 17C166 9 160 4 139 8Z" fill="url(#plane)"/>
+    <path d="M46 81L126 31L63 94L58 121L46 81Z" fill="#0E5CE8"/>
+    <path d="M63 94L92 107L75 123C72 126 70 128 66 128C61 128 60 126 58 121L63 94Z" fill="#3E8BFF"/>
+  </g>
+
+  <!-- yellow accent strokes -->
+  <rect x="517" y="22" width="10" height="52" rx="5" transform="rotate(18 517 22)" fill="#F4C400"/>
+  <rect x="546" y="40" width="10" height="38" rx="5" transform="rotate(40 546 40)" fill="#F4C400"/>
+
+  <!-- handwriting-like decorative line -->
+  <path d="M425 292C460 274 490 273 516 286C531 293 542 305 551 319" stroke="#62719B" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
+  <path d="M547 309L553 321L540 319" stroke="#62719B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
