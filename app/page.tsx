@@ -161,25 +161,13 @@ export default async function Home() {
             </div>
           </section>
 
-          <section className="tg-surface p-7 sm:p-10 mb-5 text-center">
-            <h2 className="font-syne font-extrabold text-[24px] sm:text-[28px] mb-4">Telegram en español para toda Latinoamérica</h2>
-            <p className="text-[#6f7894] leading-relaxed max-w-3xl mx-auto mb-4">
-              TGOnly reúne grupos y comunidades de Telegram en español para usuarios de México, Argentina, Colombia, Chile, Perú y el resto de Latinoamérica.
-            </p>
-            <p className="text-[#6f7894] leading-relaxed max-w-3xl mx-auto">
-              Desde comunidades de <Link href="/grupos/cripto" className="text-[#1769ff] font-semibold hover:underline">cripto y trading</Link>,
-              hasta <Link href="/grupos/tech" className="text-[#1769ff] font-semibold hover:underline">tecnología e IA</Link>,
-              <Link href="/grupos/gaming" className="text-[#1769ff] font-semibold hover:underline"> gaming</Link>,
-              <Link href="/grupos/noticias" className="text-[#1769ff] font-semibold hover:underline"> noticias</Link>,
-              <Link href="/grupos/trabajos-latam" className="text-[#1769ff] font-semibold hover:underline"> trabajos</Link> y más.
-            </p>
-          </section>
+
 
         </main>
 
         <footer className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pb-8">
           <div className="rounded-3xl bg-[#edf9f1] border border-[#e2eee6] p-6 flex flex-col md:flex-row gap-5 md:items-center md:justify-between">
-            <div className="font-syne font-extrabold text-xl">TGOnly <span className="text-sm font-normal text-[#6f7894] ml-2">Comunidades que te conectan.</span></div>
+            <div className="font-syne font-extrabold text-xl">TGOnly <span className="text-sm font-normal text-[#6f7894] ml-2">Grupos y comunidades de Telegram en español para México, Argentina, Colombia y toda Latinoamérica.</span></div>
             <div className="flex flex-wrap gap-5 text-sm text-[#66718d]"><Link href="/grupos">Explorar</Link><Link href="/agregar">Agregar grupo</Link><Link href="/buscar">Buscar</Link></div>
           </div>
         </footer>
