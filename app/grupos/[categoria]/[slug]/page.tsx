@@ -35,7 +35,7 @@ export default async function GroupPage({ params }: { params: { categoria: strin
 
   const cat = staticCategories.find(c => c.slug === params.categoria)
   const related = groups.filter(g => g.category === params.categoria && slugify(g.name) !== params.slug).slice(0,3)
-  const photoSrc = group.photo_url ? `/api/photo?url=${encodeURIComponent(group.photo_url)}` : group.username ? `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}` : null
+  const photoSrc = group.photo_url?.startsWith('/api/photo?chat_id=') ? group.photo_url : group.photo_url ? `/api/photo?url=${encodeURIComponent(group.photo_url)}` : group.username ? `/api/photo?username=${group.username}${group.id?`&id=${group.id}`:''}` : null
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-[#f0eff8]" style={{fontFamily:"'DM Sans',sans-serif"}}>
@@ -97,7 +97,7 @@ export default async function GroupPage({ params }: { params: { categoria: strin
             <h2 className="font-syne font-bold text-[18px] mb-4">Grupos similares en {cat?.name}</h2>
             <div className="flex flex-col gap-3">
               {related.map(g => {
-                const rPhotoSrc = g.photo_url ? `/api/photo?url=${encodeURIComponent(g.photo_url)}` : g.username ? `/api/photo?username=${g.username}` : null
+                const rPhotoSrc = g.photo_url?.startsWith('/api/photo?chat_id=') ? g.photo_url : g.photo_url ? `/api/photo?url=${encodeURIComponent(g.photo_url)}` : g.username ? `/api/photo?username=${g.username}` : null
                 return (
                   <Link key={g.name} href={`/grupos/${g.category}/${slugify(g.name)}`}
                     className="flex items-center gap-4 bg-[#111118] border border-white/[0.07] rounded-xl p-4 hover:border-[#2AABEE]/30 transition-all">

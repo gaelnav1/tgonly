@@ -1,8 +1,10 @@
+import { supabaseHeaders } from '@/lib/supabaseHeaders'
 import { NextRequest, NextResponse } from 'next/server'
+import { safePhotoUrl } from '@/lib/photoUrl'
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
-const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
+const h = { ...supabaseHeaders(SUPABASE_KEY), 'Content-Type': 'application/json' }
 function auth(req: NextRequest) { return Boolean(ADMIN_PASSWORD) && req.headers.get('x-admin-password') === ADMIN_PASSWORD }
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -23,7 +25,7 @@ export async function GET(req: NextRequest) {
     let data = await res.json()
     if (!Array.isArray(data)) return NextResponse.json({ error: 'Respuesta inesperada de Supabase' }, { status: 502 })
     if (search) { const q = search.toLowerCase(); data = data.filter((g:any) => g.name?.toLowerCase().includes(q)||g.description?.toLowerCase().includes(q)) }
-    return NextResponse.json(data)
+    return NextResponse.json(data.map((group: any) => ({ ...group, photo_url: safePhotoUrl(group.photo_url) })))
   } catch (error) {
     console.error('Admin groups: Supabase request failed', error)
     return NextResponse.json({ error: 'No se pudo conectar con Supabase' }, { status: 503 })
@@ -35,7 +37,7 @@ export async function PATCH(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
   const allowed = ['name','description','tags','link','members','category','verified','trending','score','photo_url','emoji','color']
   const update: any = {}
-  for (const k of allowed) { if (fields[k] !== undefined) update[k] = fields[k] }
+  for (const k of allowed) { if (fields[k] !== undefined) update[k] = k === 'photo_url' ? safePhotoUrl(fields[k]) : fields[k] }
   const res = await fetch(`${SUPABASE_URL}/rest/v1/groups?id=eq.${id}`, { method:'PATCH', headers:{...h,'Prefer':'return=representation'}, body:JSON.stringify(update) })
   if (!res.ok) return NextResponse.json({ error: await res.text() }, { status: 500 })
   return NextResponse.json({ ok: true })

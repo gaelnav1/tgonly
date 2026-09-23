@@ -183,7 +183,7 @@ export default function AgregarPage() {
               <div style={{background:'#111118',border:'1px solid rgba(42,171,238,0.3)',borderRadius:16,padding:24,marginBottom:16}}>
                 <p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:14,color:'#2AABEE',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:16}}>✅ Grupo encontrado</p>
                 <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
-                  {preview.photo_url ? <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt={preview.name} style={{width:64,height:64,borderRadius:16,objectFit:'cover',flexShrink:0}} /> : <div style={{width:64,height:64,borderRadius:16,background:'rgba(42,171,238,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>📱</div>}
+                  {preview.photo_url ? <img src={preview.photo_url.startsWith('/api/photo?chat_id=') ? preview.photo_url : `/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt={preview.name} style={{width:64,height:64,borderRadius:16,objectFit:'cover',flexShrink:0}} /> : <div style={{width:64,height:64,borderRadius:16,background:'rgba(42,171,238,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>📱</div>}
                   <div><p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:17,color:'#f0eff8',marginBottom:4}}>{preview.name}</p><p style={{fontSize:13,color:'#3dd68c',fontWeight:600}}>{preview.members?.toLocaleString('es')} miembros</p>{preview.description&&<p style={{fontSize:13,color:'#8888aa',lineHeight:1.6,marginTop:4}}>{preview.description}</p>}</div>
                 </div>
               </div>
@@ -228,7 +228,7 @@ export default function AgregarPage() {
 
               {preview?.photo_url && (
                 <div style={{display:'flex',gap:12,alignItems:'center',background:'rgba(245,166,35,0.06)',border:'1px solid rgba(245,166,35,0.2)',borderRadius:12,padding:12,marginBottom:14}}>
-                  <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt="foto" style={{width:48,height:48,borderRadius:12,objectFit:'cover'}} />
+                  <img src={preview.photo_url.startsWith('/api/photo?chat_id=') ? preview.photo_url : `/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt="foto" style={{width:48,height:48,borderRadius:12,objectFit:'cover'}} />
                   <p style={{fontSize:13,color:'#f5a623',fontWeight:600}}>✅ Foto obtenida automaticamente</p>
                 </div>
               )}

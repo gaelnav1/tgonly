@@ -1,8 +1,9 @@
+import { supabaseHeaders } from '@/lib/supabaseHeaders'
 import { NextRequest, NextResponse } from 'next/server'
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
-const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
+const h = { ...supabaseHeaders(SUPABASE_KEY), 'Content-Type': 'application/json' }
 function slugify(text: string) { return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') }
 export async function POST(req: NextRequest) {
   const { name, emoji, description, submitter_name, submitter_email } = await req.json()

@@ -1,4 +1,6 @@
+import { supabaseHeaders } from '@/lib/supabaseHeaders'
 import { groups as staticGroups, categories as staticCategories } from '@/data/groups'
+import { safePhotoUrl } from './photoUrl'
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
@@ -14,7 +16,7 @@ export type Category = { emoji: string; name: string; count: string; slug: strin
 async function getSupabaseGroups(): Promise<Group[]> {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/groups?select=*&order=score.desc`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      headers: { ...supabaseHeaders(SUPABASE_KEY) },
       next: { revalidate: 60 },
     })
     if (!res.ok) return []
@@ -27,7 +29,7 @@ async function getSupabaseGroups(): Promise<Group[]> {
       tags: Array.isArray(g.tags) ? g.tags : [],
       trending: g.trending || false, category: g.category,
       link: g.link || '#', score: g.score || 50,
-      photo_url: g.photo_url || null, username: g.username || null, id: g.id,
+      photo_url: safePhotoUrl(g.photo_url), username: g.username || null, id: g.id,
     }))
   } catch { return [] }
 }
@@ -35,7 +37,7 @@ async function getSupabaseGroups(): Promise<Group[]> {
 async function getCustomCategories(): Promise<Category[]> {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/categories_custom?select=*&order=created_at.asc`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      headers: { ...supabaseHeaders(SUPABASE_KEY) },
       next: { revalidate: 60 },
     })
     if (!res.ok) return []

@@ -1,13 +1,16 @@
+import { supabaseHeaders } from '@/lib/supabaseHeaders'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPhotoForGroup } from '@/lib/getPhoto'
+import { safePhotoUrl } from '@/lib/photoUrl'
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || ''
-const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' }
+const h = { ...supabaseHeaders(SUPABASE_KEY), 'Content-Type': 'application/json' }
 export async function GET(req: NextRequest) {
   if (!ADMIN_PASSWORD || req.headers.get('x-admin-password') !== ADMIN_PASSWORD) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   const res = await fetch(`${SUPABASE_URL}/rest/v1/groups_pending?status=eq.pendiente&order=created_at.desc`, { headers: h })
-  return NextResponse.json(await res.json())
+  const data = await res.json()
+  return NextResponse.json(Array.isArray(data) ? data.map(group => ({ ...group, photo_url: safePhotoUrl(group.photo_url) })) : data)
 }
 export async function POST(req: NextRequest) {
   if (!ADMIN_PASSWORD || req.headers.get('x-admin-password') !== ADMIN_PASSWORD) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
@@ -16,7 +19,7 @@ export async function POST(req: NextRequest) {
   if (action === 'aprobar') {
     const [group] = await (await fetch(`${SUPABASE_URL}/rest/v1/groups_pending?id=eq.${id}`, { headers: h })).json()
     if (!group) return NextResponse.json({ error: 'No encontrado' }, { status: 404 })
-    let photoUrl = group.photo_url || null
+    let photoUrl = safePhotoUrl(group.photo_url)
     let username = group.username || null
     if (!photoUrl) {
       const result = await getPhotoForGroup({ name: group.name, link: group.link, username: group.username })
