@@ -34,9 +34,17 @@ export default function AdminPage() {
     setLoading(true); setAuthError('')
     try {
       const gRes = await fetch('/api/admin/grupos',{headers:{'x-admin-password':password}})
-      if (gRes.status===401) { setAuthError('Contrasena incorrecta'); setLoading(false); return }
+      if (gRes.status===401) { setAuthError('Contraseña incorrecta'); return }
+      if (!gRes.ok) {
+        const detail = await gRes.json().catch(() => null)
+        setAuthError(gRes.status===403
+          ? 'Acceso bloqueado por el servidor (HTTP 403). Revisa las reglas de AWS Amplify/CloudFront.'
+          : `${detail?.error || 'El servidor no respondió correctamente'} (HTTP ${gRes.status})`)
+        return
+      }
       const gData = await gRes.json()
-      setGroups(Array.isArray(gData)?gData:[])
+      if (!Array.isArray(gData)) throw new Error('Respuesta inesperada del servidor')
+      setGroups(gData)
       try {
         const pRes = await fetch('/api/admin',{headers:{'x-admin-password':password}})
         const pData = await pRes.json()

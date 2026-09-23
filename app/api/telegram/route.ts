@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8645667047:AAGHw3-Ig_F830J-e3fpFdP71h7m2yGQbSw'
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || ''
 async function getPhotoUrl(fileId: string): Promise<string|null> {
   try {
     const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getFile?file_id=${fileId}`)
