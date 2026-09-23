@@ -114,15 +114,47 @@ export default async function Home() {
                 </div>
               </div>
 
-              <div className="relative min-h-[265px] rounded-[30px] bg-[#fff5cf] overflow-hidden p-7">
-                <div className="relative z-10 max-w-[48%]">
-                  <h2 className="font-syne font-extrabold text-[22px] leading-[1.06]">Conecta con<br/>lo que te interesa</h2>
-                  <p className="text-[#6f7894] mt-3 text-[13px] leading-relaxed">Miles de comunidades reales en un solo lugar.<br/>Explora. Únete. Crece.</p>
-                  <div className="w-10 h-1.5 rounded-full bg-[#ffd91a] mt-4"/>
+              <div className="relative min-h-[250px] rounded-[28px] bg-[#FFF4C9] overflow-hidden p-7">
+                <div className="relative z-10 max-w-[230px]">
+                  <h2 className="font-syne font-extrabold text-[24px] leading-[1.05] tracking-[-0.5px] text-[#0F1733]">
+                    Conecta con<br/>lo que te interesa
+                  </h2>
+                  <p className="mt-4 text-[13px] leading-[1.55] text-[#5F6C89]">
+                    Miles de comunidades<br/>reales en un solo lugar.<br/>Explora. Únete. Crece.
+                  </p>
+                  <div className="mt-5 w-11 h-[6px] rounded-full bg-[#F4C400]" />
                 </div>
-                <div className="absolute right-5 top-1/2 -translate-y-1/2 w-[45%] aspect-square max-w-[170px] rounded-[30px] bg-[#e7efff] rotate-[-7deg] flex items-center justify-center text-[70px] text-[#1769ff] shadow-sm">➤</div>
-                <div className="absolute right-5 bottom-5 rounded-2xl bg-white shadow-[0_10px_28px_rgba(39,56,95,.10)] px-3.5 py-2.5 text-[12px] font-bold text-[#34405f]">Comunidades reales</div>
-                <div className="absolute right-7 top-4 text-[#f1c900] text-2xl font-black">〃</div>
+
+                <div className="absolute right-10 top-8 flex gap-3 rotate-[18deg]">
+                  <span className="block w-[6px] h-[28px] rounded-full bg-[#F4C400]" />
+                  <span className="block w-[6px] h-[20px] rounded-full bg-[#F4C400]" />
+                </div>
+
+                <div className="absolute right-7 top-1/2 -translate-y-1/2 rotate-[-8deg]">
+                  <div className="w-[170px] h-[170px] rounded-[32px] bg-[#E7EEFF] shadow-[0_10px_24px_rgba(39,56,95,.10)] flex items-center justify-center">
+                    <div className="text-[#1769FF] scale-[1.2]">
+                      <svg width="76" height="76" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M21.5 3.5L2.8 10.7c-1.3.5-1.3 1.3-.2 1.7l4.8 1.5 1.8 5.5c.2.6.1.8.8.8.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.6c.9.5 1.5.2 1.7-.8l3.2-15.1c.3-1.2-.4-1.8-1.5-1.3Z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute right-3 bottom-5 rounded-[18px] bg-white shadow-[0_10px_28px_rgba(39,56,95,.12)] px-4 py-3 flex items-center gap-3 min-w-[210px]">
+                  <div className="w-10 h-10 rounded-xl bg-[#EEF4FF] flex items-center justify-center text-[#1769FF]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5 1.34 3.5 3 3.5Z"/>
+                      <path d="M8 11c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11Z"/>
+                      <path d="M16 20v-1c0-1.66-1.79-3-4-3s-4 1.34-4 3v1"/>
+                      <path d="M20 20v-1c0-1.2-.94-2.23-2.28-2.74"/>
+                      <path d="M4 20v-1c0-1.2.94-2.23 2.28-2.74"/>
+                    </svg>
+                  </div>
+                  <div className="leading-tight">
+                    <div className="text-[14px] font-bold text-[#243250]">Comunidades reales</div>
+                    <div className="text-[12px] text-[#7A86A2]">Personas como tú</div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
