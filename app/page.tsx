@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'TGOnly — Directorio #1 de Grupos de Telegram en Español',
     description: 'Descubre miles de grupos verificados de Telegram en español. Cripto, tech, gaming y más.',
-    url: 'https://tgonly.com',
+    url: 'https://telegramonly.com',
     siteName: 'TGOnly',
     locale: 'es_MX',
     type: 'website',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: 'El directorio #1 de grupos de Telegram para la comunidad hispana.',
   },
   alternates: {
-    canonical: 'https://tgonly.com',
+    canonical: 'https://telegramonly.com',
   },
 }
 
@@ -36,8 +36,8 @@ function HomeSchema() {
     '@graph': [
       {
         '@type': 'WebSite',
-        '@id': 'https://tgonly.com/#website',
-        url: 'https://tgonly.com',
+        '@id': 'https://telegramonly.com/#website',
+        url: 'https://telegramonly.com',
         name: 'TGOnly',
         description: 'Directorio #1 de grupos de Telegram en español',
         inLanguage: 'es',
@@ -45,7 +45,7 @@ function HomeSchema() {
           '@type': 'SearchAction',
           target: {
             '@type': 'EntryPoint',
-            urlTemplate: 'https://tgonly.com/buscar?q={search_term_string}',
+            urlTemplate: 'https://telegramonly.com/buscar?q={search_term_string}',
           },
           'query-input': 'required name=search_term_string',
         },
@@ -58,7 +58,7 @@ function HomeSchema() {
           '@type': 'ListItem',
           position: i + 1,
           name: `Grupos de Telegram de ${cat.name}`,
-          url: `https://tgonly.com/grupos/${cat.slug}`,
+          url: `https://telegramonly.com/grupos/${cat.slug}`,
         })),
       },
     ],
