@@ -105,157 +105,254 @@ export default function AgregarPage() {
     finally { setCatSubmitting(false) }
   }
 
-  const inp = {width:'100%',background:'#1c1c27',border:'1px solid rgba(255,255,255,0.12)',borderRadius:10,padding:'12px 16px',color:'#f0eff8',fontFamily:"'DM Sans',sans-serif",fontSize:15,outline:'none'} as React.CSSProperties
-  const btn = (bg:string,color:string) => ({width:'100%',background:bg,color,border:'none',borderRadius:12,padding:'14px',fontFamily:"'DM Sans',sans-serif",fontWeight:700,fontSize:16,cursor:'pointer'}) as React.CSSProperties
+  const inputClass = "w-full rounded-2xl border border-[#dfe5ef] bg-white px-4 py-3.5 text-[15px] text-[#11182d] placeholder:text-[#9aa3b8] outline-none transition focus:border-[#1769ff] focus:ring-4 focus:ring-[#1769ff]/10"
+  const labelClass = "mb-2 block text-[13px] font-semibold text-[#66718d]"
+  const cardClass = "rounded-3xl border border-[#e6eaf2] bg-white p-5 sm:p-6 shadow-[0_12px_30px_rgba(39,56,95,.05)]"
 
   if (success) return (
-    <div style={{minHeight:'100vh',background:'#0a0a0f',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'DM Sans',sans-serif"}}>
-      <div style={{textAlign:'center',maxWidth:480,padding:'0 24px'}}>
-        <div style={{fontSize:64,marginBottom:24}}>✅</div>
-        <h1 style={{fontFamily:"'Syne',sans-serif",fontWeight:800,fontSize:28,color:'#f0eff8',marginBottom:16}}>Enviado</h1>
-        <p style={{color:'#8888aa',lineHeight:1.8,marginBottom:32}}>Lo revisaremos en 24-48 horas.</p>
-        <Link href="/" style={{background:'#2AABEE',color:'#000',fontWeight:700,padding:'12px 32px',borderRadius:12,textDecoration:'none'}}>Volver al inicio</Link>
-      </div>
+    <div className="min-h-screen bg-[#f5f7fb] text-[#11182d]">
+      <Navbar />
+      <main className="mx-auto flex min-h-screen max-w-3xl items-center justify-center px-4 pt-24">
+        <div className="tg-surface w-full max-w-xl p-8 text-center sm:p-12">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#e9f8ee] text-3xl">✓</div>
+          <h1 className="font-syne text-3xl font-extrabold">Grupo enviado</h1>
+          <p className="mt-3 text-[#6f7894]">Lo revisaremos antes de publicarlo en TGOnly.</p>
+          <Link href="/" className="tg-primary mt-7 inline-flex px-6 py-3 font-bold">Volver al inicio</Link>
+        </div>
+      </main>
     </div>
   )
 
   return (
-    <div style={{minHeight:'100vh',background:'#0a0a0f',color:'#f0eff8',fontFamily:"'DM Sans',sans-serif"}}>
+    <div className="min-h-screen bg-[#f5f7fb] text-[#11182d]">
       <Navbar />
-      <div style={{maxWidth:640,margin:'0 auto',padding:'80px 24px 80px'}}>
-        <div style={{marginBottom:40,textAlign:'center',paddingTop:20}}>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontWeight:800,fontSize:'clamp(28px,5vw,40px)',marginBottom:12}}>
-            Agrega tu grupo a <span style={{color:'#2AABEE'}}>TGOnly</span>
-          </h1>
-          <p style={{color:'#8888aa',fontSize:16,lineHeight:1.7}}>Gratis y sin registro. Revisado en 24-48 horas.</p>
-        </div>
 
-        {/* Tabs */}
-        <div style={{display:'flex',gap:8,marginBottom:24,background:'#111118',border:'1px solid rgba(255,255,255,0.07)',borderRadius:12,padding:4}}>
-          {[['grupo','📱 Agregar grupo'],['categoria','📂 Proponer categoria']].map(([t,l]) => (
-            <button key={t} onClick={()=>setTab(t as any)} style={{flex:1,padding:'10px',borderRadius:9,border:'none',cursor:'pointer',fontWeight:700,fontSize:14,background:tab===t?'#2AABEE':'transparent',color:tab===t?'#000':'#8888aa',fontFamily:"'DM Sans',sans-serif"}}>{l}</button>
+      <main className="mx-auto max-w-4xl px-4 pb-20 pt-28 sm:px-6 lg:px-10">
+        <section className="tg-surface mb-5 overflow-hidden p-6 sm:p-8">
+          <div className="grid items-center gap-7 md:grid-cols-[1.2fr_.8fr]">
+            <div>
+              <div className="mb-4 inline-flex rounded-full bg-[#fff4cf] px-3 py-1.5 text-xs font-bold text-[#735b00]">＋ Publica tu comunidad</div>
+              <h1 className="font-syne text-[clamp(34px,6vw,54px)] font-extrabold leading-[1.03] tracking-[-1.5px]">
+                Agrega tu grupo a <span className="text-[#1769ff]">TGOnly</span>
+              </h1>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-[#6f7894]">
+                Comparte tu grupo o canal de Telegram. Revisamos la información antes de publicarla.
+              </p>
+            </div>
+            <div className="hidden min-h-[180px] rounded-[30px] bg-[#fff4cf] p-7 md:block">
+              <p className="font-syne text-2xl font-extrabold leading-tight">Más personas.<br/>Mejores comunidades.</p>
+              <div className="mt-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#eaf3ff] text-4xl text-[#1769ff]">➤</div>
+            </div>
+          </div>
+        </section>
+
+        <div className="mb-5 grid grid-cols-2 gap-2 rounded-2xl border border-[#e6eaf2] bg-white p-1.5 shadow-[0_8px_24px_rgba(39,56,95,.04)]">
+          {[['grupo','Agregar grupo'],['categoria','Proponer categoría']].map(([t,l]) => (
+            <button key={t} onClick={()=>setTab(t as any)}
+              className={`rounded-xl px-4 py-3 text-sm font-bold transition ${tab===t?'bg-[#1769ff] text-white shadow-sm':'text-[#6f7894] hover:bg-[#f5f7fb]'}`}>
+              {l}
+            </button>
           ))}
         </div>
 
-        {/* Categoria form */}
-        {tab==='categoria' && (catSuccess ? (
-          <div style={{textAlign:'center',padding:'40px 0'}}>
-            <div style={{fontSize:48,marginBottom:16}}>✅</div>
-            <h3 style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:20,color:'#f0eff8',marginBottom:8}}>Categoria enviada</h3>
-            <p style={{color:'#8888aa'}}>La revisaremos en 24-48 horas.</p>
-          </div>
-        ) : (
-          <div style={{background:'#111118',border:'1px solid rgba(255,255,255,0.07)',borderRadius:16,padding:24}}>
-            <div style={{display:'grid',gridTemplateColumns:'80px 1fr',gap:12,marginBottom:14}}>
-              <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Emoji *</label><input value={catEmoji} onChange={e=>setCatEmoji(e.target.value)} placeholder="🎮" style={{...inp,fontSize:22,textAlign:'center'}} /></div>
-              <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Nombre *</label><input value={catName} onChange={e=>setCatName(e.target.value)} placeholder="Musica, Cocina..." style={inp} /></div>
+        {tab==='categoria' && (
+          catSuccess ? (
+            <div className="tg-surface p-10 text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e9f8ee] text-2xl">✓</div>
+              <h2 className="font-syne text-2xl font-extrabold">Categoría enviada</h2>
+              <p className="mt-2 text-[#6f7894]">La revisaremos antes de agregarla al directorio.</p>
             </div>
-            <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Descripcion</label><input value={catDesc} onChange={e=>setCatDesc(e.target.value)} placeholder="¿De que tratan los grupos?" style={inp} /></div>
-            {catError && <p style={{color:'#ff5f6d',fontSize:13,marginBottom:12}}>⚠️ {catError}</p>}
-            <button onClick={handleCategorySubmit} disabled={!catName||!catEmoji||catSubmitting} style={{...btn('#2AABEE','#000'),opacity:(!catName||!catEmoji||catSubmitting)?0.5:1}}>
-              {catSubmitting?'Enviando...':'📂 Proponer categoria'}
-            </button>
-          </div>
-        ))}
-
-        {/* Grupo form */}
-        {tab==='grupo' && (<>
-          <div style={{display:'flex',gap:8,marginBottom:20,background:'#111118',border:'1px solid rgba(255,255,255,0.07)',borderRadius:12,padding:4}}>
-            {[['publico','🌐 Grupo publico'],['privado','🔒 Grupo privado']].map(([t,l]) => (
-              <button key={t} onClick={()=>setTipo(t as any)} style={{flex:1,padding:'9px',borderRadius:9,border:'none',cursor:'pointer',fontWeight:600,fontSize:13,background:tipo===t?'rgba(42,171,238,0.15)':'transparent',color:tipo===t?'#2AABEE':'#8888aa',fontFamily:"'DM Sans',sans-serif"}}>{l}</button>
-            ))}
-          </div>
-
-          {/* Publico */}
-          {tipo==='publico' && (<>
-            <div style={{background:'#111118',border:'1px solid rgba(255,255,255,0.07)',borderRadius:16,padding:24,marginBottom:16}}>
-              <p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:14,color:'#8888aa',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:12}}>Paso 1 — Link del grupo</p>
-              <div style={{display:'flex',gap:10}}>
-                <input value={link} onChange={e=>setLink(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handlePreview()} placeholder="https://t.me/tugrupo" style={{...inp,flex:1}} />
-                <button onClick={handlePreview} disabled={loadingPreview||!link.trim()} style={{background:'#2AABEE',color:'#000',border:'none',borderRadius:10,padding:'12px 20px',fontWeight:700,fontSize:14,cursor:'pointer',opacity:(!link.trim()||loadingPreview)?0.5:1,fontFamily:"'DM Sans',sans-serif"}}>
-                  {loadingPreview?'Cargando...':'Verificar'}
-                </button>
-              </div>
-              {previewError && <p style={{color:'#ff5f6d',fontSize:13,marginTop:8}}>⚠️ {previewError}</p>}
-            </div>
-
-            {preview && (
-              <div style={{background:'#111118',border:'1px solid rgba(42,171,238,0.3)',borderRadius:16,padding:24,marginBottom:16}}>
-                <p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:14,color:'#2AABEE',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:16}}>✅ Grupo encontrado</p>
-                <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
-                  {preview.photo_url ? <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt={preview.name} style={{width:64,height:64,borderRadius:16,objectFit:'cover',flexShrink:0}} /> : <div style={{width:64,height:64,borderRadius:16,background:'rgba(42,171,238,0.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>📱</div>}
-                  <div><p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:17,color:'#f0eff8',marginBottom:4}}>{preview.name}</p><p style={{fontSize:13,color:'#3dd68c',fontWeight:600}}>{preview.members?.toLocaleString('es')} miembros</p>{preview.description&&<p style={{fontSize:13,color:'#8888aa',lineHeight:1.6,marginTop:4}}>{preview.description}</p>}</div>
-                </div>
-              </div>
-            )}
-
-            {preview && (
-              <div style={{background:'#111118',border:'1px solid rgba(255,255,255,0.07)',borderRadius:16,padding:24,marginBottom:16}}>
-                <p style={{fontFamily:"'Syne',sans-serif",fontWeight:700,fontSize:14,color:'#8888aa',textTransform:'uppercase',letterSpacing:'.08em',marginBottom:20}}>Paso 2 — Detalles</p>
-                <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Categoria *</label>
-                  <select value={category} onChange={e=>setCategory(e.target.value)} style={{...inp,color:category?'#f0eff8':'#8888aa'}}>
-                    <option value="">Selecciona...</option>{CATEGORIES.map(c=><option key={c.slug} value={c.slug}>{c.name}</option>)}
-                  </select>
-                </div>
-                <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Tags</label><input value={tags} onChange={e=>setTags(e.target.value)} placeholder="cripto, bitcoin" style={inp} /></div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
-                  <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Tu nombre</label><input value={submitterName} onChange={e=>setSubmitterName(e.target.value)} placeholder="Juan" style={inp} /></div>
-                  <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Email</label><input value={submitterEmail} onChange={e=>setSubmitterEmail(e.target.value)} placeholder="juan@email.com" type="email" style={inp} /></div>
-                </div>
-                {submitError&&<p style={{color:'#ff5f6d',fontSize:13,marginBottom:12}}>⚠️ {submitError}</p>}
-                <button onClick={handleSubmit} disabled={!category||submitting} style={{...btn('#2AABEE','#000'),opacity:(!category||submitting)?0.5:1}}>
-                  {submitting?'Enviando...':'Enviar grupo para revision'}
-                </button>
-              </div>
-            )}
-          </>)}
-
-          {/* Privado */}
-          {tipo==='privado' && (
-            <div style={{background:'#111118',border:'1px solid rgba(245,166,35,0.2)',borderRadius:16,padding:24,marginBottom:16}}>
-              <div style={{background:'rgba(42,171,238,0.06)',border:'1px solid rgba(42,171,238,0.2)',borderRadius:12,padding:16,marginBottom:20}}>
-                <p style={{fontSize:14,color:'#f0eff8',fontWeight:600,marginBottom:8}}>📋 Para obtener la foto automaticamente</p>
-                <p style={{fontSize:13,color:'#8888aa',lineHeight:1.8,marginBottom:10}}>Agrega <strong style={{color:'#2AABEE'}}>@tgonlybot</strong> como miembro de tu grupo antes de verificar.</p>
-                <a href="https://t.me/tgonlybot" target="_blank" rel="noopener noreferrer" style={{background:'#2AABEE',color:'#000',border:'none',borderRadius:8,padding:'6px 14px',fontWeight:700,fontSize:12,cursor:'pointer',textDecoration:'none',fontFamily:"'DM Sans',sans-serif"}}>Abrir bot →</a>
+          ) : (
+            <section className={cardClass}>
+              <div className="mb-6">
+                <h2 className="font-syne text-xl font-extrabold">Proponer una categoría</h2>
+                <p className="mt-1 text-sm text-[#7b86a1]">Sugiere una temática que todavía no exista en TGOnly.</p>
               </div>
 
-              <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Link de invitacion *</label>
-                <div style={{display:'flex',gap:10}}>
-                  <input value={privLink} onChange={e=>setPrivLink(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handlePrivateVerify()} placeholder="https://t.me/+xxxxxxxxxx" style={{...inp,flex:1}} />
-                  <button onClick={handlePrivateVerify} disabled={!privLink.trim()||loadingPreview} style={{background:'#f5a623',color:'#000',border:'none',borderRadius:10,padding:'12px 20px',fontWeight:700,fontSize:14,cursor:'pointer',opacity:(!privLink.trim()||loadingPreview)?0.5:1,fontFamily:"'DM Sans',sans-serif"}}>{loadingPreview?'Cargando...':'Obtener foto'}</button>
+              <div className="grid gap-4 sm:grid-cols-[110px_1fr]">
+                <div>
+                  <label className={labelClass}>Emoji *</label>
+                  <input value={catEmoji} onChange={e=>setCatEmoji(e.target.value)} placeholder="🎮" className={inputClass+" text-center text-xl"} />
+                </div>
+                <div>
+                  <label className={labelClass}>Nombre *</label>
+                  <input value={catName} onChange={e=>setCatName(e.target.value)} placeholder="Música, Cocina..." className={inputClass} />
                 </div>
               </div>
-
-              {preview?.photo_url && (
-                <div style={{display:'flex',gap:12,alignItems:'center',background:'rgba(245,166,35,0.06)',border:'1px solid rgba(245,166,35,0.2)',borderRadius:12,padding:12,marginBottom:14}}>
-                  <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt="foto" style={{width:48,height:48,borderRadius:12,objectFit:'cover'}} />
-                  <p style={{fontSize:13,color:'#f5a623',fontWeight:600}}>✅ Foto obtenida automaticamente</p>
-                </div>
-              )}
-
-              <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Nombre del grupo *</label><input value={privName} onChange={e=>setPrivName(e.target.value)} placeholder="Nombre" style={inp} /></div>
-              <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Descripcion</label><input value={privDesc} onChange={e=>setPrivDesc(e.target.value)} placeholder="¿De que trata?" style={inp} /></div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}}>
-                <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Miembros aprox</label><input value={privMembers} onChange={e=>setPrivMembers(e.target.value)} placeholder="1500" style={inp} /></div>
-                <div><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Categoria *</label>
-                  <select value={privCategory} onChange={e=>setPrivCategory(e.target.value)} style={{...inp,color:privCategory?'#f0eff8':'#8888aa'}}>
-                    <option value="">Selecciona...</option>{CATEGORIES.map(c=><option key={c.slug} value={c.slug}>{c.name}</option>)}
-                  </select>
-                </div>
+              <div className="mt-4">
+                <label className={labelClass}>Descripción</label>
+                <input value={catDesc} onChange={e=>setCatDesc(e.target.value)} placeholder="¿De qué tratan estos grupos?" className={inputClass} />
               </div>
-              <div style={{marginBottom:14}}><label style={{display:'block',fontSize:13,color:'#8888aa',marginBottom:8}}>Tags</label><input value={privTags} onChange={e=>setPrivTags(e.target.value)} placeholder="privado, latam" style={inp} /></div>
-              {submitError&&<p style={{color:'#ff5f6d',fontSize:13,marginBottom:12}}>⚠️ {submitError}</p>}
-              <button onClick={handlePrivateSubmit} disabled={!privName||!privLink||!privCategory||submitting} style={{...btn('#f5a623','#000'),opacity:(!privName||!privLink||!privCategory||submitting)?0.5:1}}>
-                {submitting?'Enviando...':'🔒 Enviar grupo privado'}
+
+              {catError && <p className="mt-4 rounded-xl bg-[#fff0f2] px-4 py-3 text-sm font-semibold text-[#c53b50]">⚠ {catError}</p>}
+              <button onClick={handleCategorySubmit} disabled={!catName||!catEmoji||catSubmitting}
+                className="tg-primary mt-6 w-full py-3.5 font-bold disabled:cursor-not-allowed disabled:opacity-45">
+                {catSubmitting?'Enviando...':'Proponer categoría'}
               </button>
-            </div>
-          )}
-        </>)}
+            </section>
+          )
+        )}
 
-        <div style={{background:'rgba(42,171,238,0.06)',border:'1px solid rgba(42,171,238,0.15)',borderRadius:12,padding:'16px 20px',marginTop:16}}>
-          <p style={{fontSize:13,color:'#8888aa',lineHeight:1.8}}><strong style={{color:'#2AABEE'}}>¿Como funciona?</strong><br/>1. Pega el link → verificamos automaticamente → elige categoria → enviamos a revision → publicamos en 24-48h</p>
-        </div>
-      </div>
+        {tab==='grupo' && (
+          <>
+            <div className="mb-5 grid grid-cols-2 gap-2 rounded-2xl border border-[#e6eaf2] bg-white p-1.5">
+              {[['publico','🌐 Grupo público'],['privado','🔒 Grupo privado']].map(([t,l]) => (
+                <button key={t} onClick={()=>setTipo(t as any)}
+                  className={`rounded-xl px-4 py-3 text-sm font-bold transition ${tipo===t?'bg-[#edf4ff] text-[#1769ff]':'text-[#6f7894] hover:bg-[#f7f9fc]'}`}>
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            {tipo==='publico' && (
+              <div className="space-y-5">
+                <section className={cardClass}>
+                  <div className="mb-5 flex items-start gap-4">
+                    <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-[#edf4ff] font-bold text-[#1769ff]">1</div>
+                    <div>
+                      <h2 className="font-syne text-xl font-extrabold">Pega el enlace</h2>
+                      <p className="mt-1 text-sm text-[#7b86a1]">Intentaremos leer automáticamente la información pública del grupo.</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input value={link} onChange={e=>setLink(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handlePreview()}
+                      placeholder="https://t.me/tugrupo" className={inputClass+" flex-1"} />
+                    <button onClick={handlePreview} disabled={loadingPreview||!link.trim()}
+                      className="tg-primary min-w-[130px] px-5 py-3 font-bold disabled:opacity-45">
+                      {loadingPreview?'Buscando...':'Verificar'}
+                    </button>
+                  </div>
+                  {previewError && <p className="mt-3 rounded-xl bg-[#fff0f2] px-4 py-3 text-sm font-semibold text-[#c53b50]">⚠ {previewError}</p>}
+                </section>
+
+                {preview && (
+                  <section className="rounded-3xl border border-[#bfd3ff] bg-[#f8fbff] p-5 sm:p-6">
+                    <div className="mb-4 text-xs font-extrabold uppercase tracking-[.08em] text-[#1769ff]">✓ Grupo encontrado</div>
+                    <div className="flex gap-4">
+                      {preview.photo_url ? (
+                        <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt={preview.name} className="h-16 w-16 flex-none rounded-2xl object-cover" />
+                      ) : (
+                        <div className="flex h-16 w-16 flex-none items-center justify-center rounded-2xl bg-[#edf4ff] text-3xl">📱</div>
+                      )}
+                      <div className="min-w-0">
+                        <h3 className="font-syne text-lg font-extrabold">{preview.name}</h3>
+                        <p className="mt-1 text-sm font-bold text-[#1769ff]">{preview.members?.toLocaleString('es')} miembros</p>
+                        {preview.description && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[#6f7894]">{preview.description}</p>}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {preview && (
+                  <section className={cardClass}>
+                    <div className="mb-5 flex items-start gap-4">
+                      <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-[#fff4cf] font-bold text-[#795f00]">2</div>
+                      <div>
+                        <h2 className="font-syne text-xl font-extrabold">Completa los detalles</h2>
+                        <p className="mt-1 text-sm text-[#7b86a1]">Ayúdanos a clasificar la comunidad correctamente.</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className={labelClass}>Categoría *</label>
+                      <select value={category} onChange={e=>setCategory(e.target.value)} className={inputClass}>
+                        <option value="">Selecciona una categoría</option>
+                        {CATEGORIES.map(c=><option key={c.slug} value={c.slug}>{c.name}</option>)}
+                      </select>
+                    </div>
+                    <div className="mt-4">
+                      <label className={labelClass}>Tags</label>
+                      <input value={tags} onChange={e=>setTags(e.target.value)} placeholder="cripto, bitcoin, trading" className={inputClass} />
+                    </div>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className={labelClass}>Tu nombre</label>
+                        <input value={submitterName} onChange={e=>setSubmitterName(e.target.value)} placeholder="Juan" className={inputClass} />
+                      </div>
+                      <div>
+                        <label className={labelClass}>Email</label>
+                        <input value={submitterEmail} onChange={e=>setSubmitterEmail(e.target.value)} placeholder="juan@email.com" type="email" className={inputClass} />
+                      </div>
+                    </div>
+                    {submitError&&<p className="mt-4 rounded-xl bg-[#fff0f2] px-4 py-3 text-sm font-semibold text-[#c53b50]">⚠ {submitError}</p>}
+                    <button onClick={handleSubmit} disabled={!category||submitting}
+                      className="tg-primary mt-6 w-full py-3.5 font-bold disabled:opacity-45">
+                      {submitting?'Enviando...':'Enviar para revisión'}
+                    </button>
+                  </section>
+                )}
+              </div>
+            )}
+
+            {tipo==='privado' && (
+              <section className={cardClass}>
+                <div className="mb-5 rounded-2xl border border-[#d9e6ff] bg-[#f5f9ff] p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-[#edf4ff] text-xl">🤖</div>
+                    <div>
+                      <h3 className="font-bold">Obtener la foto automáticamente</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-[#6f7894]">Agrega <strong className="text-[#1769ff]">@tgonlybot</strong> como miembro antes de verificar el enlace.</p>
+                      <a href="https://t.me/tgonlybot" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex rounded-xl bg-[#1769ff] px-4 py-2 text-xs font-bold text-white">Abrir bot →</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelClass}>Link de invitación *</label>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input value={privLink} onChange={e=>setPrivLink(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handlePrivateVerify()} placeholder="https://t.me/+xxxxxxxxxx" className={inputClass+" flex-1"} />
+                    <button onClick={handlePrivateVerify} disabled={!privLink.trim()||loadingPreview} className="rounded-2xl bg-[#ffd91a] px-5 py-3 font-bold text-[#3b3100] disabled:opacity-45">
+                      {loadingPreview?'Buscando...':'Obtener foto'}
+                    </button>
+                  </div>
+                </div>
+
+                {preview?.photo_url && (
+                  <div className="mt-4 flex items-center gap-3 rounded-2xl bg-[#fff9df] p-3">
+                    <img src={`/api/photo?url=${encodeURIComponent(preview.photo_url)}`} alt="foto" className="h-12 w-12 rounded-xl object-cover" />
+                    <p className="text-sm font-bold text-[#735b00]">✓ Foto obtenida automáticamente</p>
+                  </div>
+                )}
+
+                <div className="mt-4">
+                  <label className={labelClass}>Nombre del grupo *</label>
+                  <input value={privName} onChange={e=>setPrivName(e.target.value)} placeholder="Nombre del grupo" className={inputClass} />
+                </div>
+                <div className="mt-4">
+                  <label className={labelClass}>Descripción</label>
+                  <input value={privDesc} onChange={e=>setPrivDesc(e.target.value)} placeholder="¿De qué trata?" className={inputClass} />
+                </div>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className={labelClass}>Miembros aprox.</label>
+                    <input value={privMembers} onChange={e=>setPrivMembers(e.target.value)} placeholder="1500" className={inputClass} />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Categoría *</label>
+                    <select value={privCategory} onChange={e=>setPrivCategory(e.target.value)} className={inputClass}>
+                      <option value="">Selecciona...</option>
+                      {CATEGORIES.map(c=><option key={c.slug} value={c.slug}>{c.name}</option>)}
+                    </select>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label className={labelClass}>Tags</label>
+                  <input value={privTags} onChange={e=>setPrivTags(e.target.value)} placeholder="privado, latam" className={inputClass} />
+                </div>
+                {submitError&&<p className="mt-4 rounded-xl bg-[#fff0f2] px-4 py-3 text-sm font-semibold text-[#c53b50]">⚠ {submitError}</p>}
+                <button onClick={handlePrivateSubmit} disabled={!privName||!privLink||!privCategory||submitting}
+                  className="mt-6 w-full rounded-2xl bg-[#ffd91a] py-3.5 font-bold text-[#3b3100] transition hover:bg-[#f3cd00] disabled:opacity-45">
+                  {submitting?'Enviando...':'Enviar grupo privado'}
+                </button>
+              </section>
+            )}
+          </>
+        )}
+
+        <section className="mt-5 rounded-3xl border border-[#dce8ff] bg-[#f5f9ff] p-5 sm:p-6">
+          <p className="text-sm leading-7 text-[#66718d]"><strong className="text-[#1769ff]">¿Cómo funciona?</strong><br/>Pega el enlace → verificamos la información → eliges una categoría → enviamos a revisión → publicamos cuando esté aprobado.</p>
+        </section>
+      </main>
     </div>
   )
 }
