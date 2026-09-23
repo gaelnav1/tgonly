@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://tgonly.com'),
+  metadataBase: new URL('https://telegramonly.com'),
   title: {
     default: 'TGOnly — Directorio #1 de Grupos de Telegram en Español',
     template: '%s | TGOnly',
