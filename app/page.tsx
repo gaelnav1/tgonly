@@ -89,7 +89,7 @@ export default async function Home() {
             <div className="grid lg:grid-cols-[1.6fr_.9fr] gap-8 items-stretch">
               <div className="flex flex-col justify-center py-1">
                 <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[#1769ff] mb-3">Comunidades que te conectan</p>
-                <h1 className="font-syne font-extrabold text-[clamp(38px,4.6vw,58px)] leading-[1.01] tracking-[-1.6px] mb-4 max-w-[760px]">
+                <h1 className="font-syne font-extrabold text-[clamp(38px,4.35vw,56px)] leading-[1.06] tracking-[-1.2px] mb-4 max-w-[740px]">
                   Explora comunidades<br/>por <span className="text-[#1769ff]">categoría</span>
                 </h1>
                 <p className="text-[#6f7894] text-[15px] sm:text-base max-w-[690px] mb-5 leading-relaxed">
@@ -116,7 +116,7 @@ export default async function Home() {
 
               <div className="relative ml-auto w-full max-w-[430px] min-h-[330px] rounded-[34px] bg-[#FFF3C9] overflow-hidden p-8">
                 <div className="relative z-10 max-w-[210px]">
-                  <h2 className="font-syne font-extrabold text-[26px] leading-[1.05] tracking-[-0.5px] text-[#0D1533]">
+                  <h2 className="font-syne font-extrabold text-[24px] leading-[1.08] tracking-[-0.35px] text-[#0D1533]">
                     Conecta<br/>con<br/>lo que te<br/>interesa
                   </h2>
 
