@@ -144,7 +144,7 @@ export default function Home() {
             <h2 className="font-syne font-bold text-[22px] tracking-tight">Explorar categorías de grupos</h2>
             <Link href="/grupos" className="text-[#2AABEE] text-[13px] font-medium hover:opacity-70 transition-opacity">Ver todas →</Link>
           </div>
-          <CategoryGrid />
+          <CategoryGrid categories={categories} />
         </section>
 
         {/* TRENDING - Server rendered */}
