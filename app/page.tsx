@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { getAllCategories, getAllGroups } from '@/lib/getGroups'
 import CategoryGrid from '@/components/CategoryGrid'
 import GroupCard from '@/components/GroupCard'
-import SearchBar from '@/components/SearchBar'  // Client component separado
+import SearchBar from '@/components/SearchBar'
+import Navbar from '@/components/Navbar'
 
 // ✅ Metadata estática para la homepage
 export const metadata: Metadata = {
@@ -74,7 +75,13 @@ function HomeSchema({ categories }: { categories: Awaited<ReturnType<typeof getA
 
 export default async function Home() {
   const [categories, groups] = await Promise.all([getAllCategories(), getAllGroups()])
-  const trendingGroups = groups.filter(g => g.trending)
+  const trendingGroups = groups.filter(g => g.trending).slice(0, 6)
+  const featuredGroups = [...groups].sort((a,b)=>(b.score??0)-(a.score??0)).slice(0, 6)
+  const totalMembers = groups.reduce((sum, g) => {
+    const parsed = Number(String(g.members).replace(/[^0-9]/g, ''))
+    return sum + (Number.isFinite(parsed) ? parsed : 0)
+  }, 0)
+  const quickLinks = featuredGroups.slice(0, 5)
 
   return (
     <>
@@ -86,71 +93,70 @@ export default async function Home() {
         <div className="fixed inset-0 pointer-events-none"
              style={{ backgroundImage: 'linear-gradient(rgba(42,171,238,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(42,171,238,0.03) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
 
-        {/* NAV */}
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 h-[60px] bg-[#0a0a0f]/85 backdrop-blur-xl border-b border-white/[0.07]">
-          <Link href="/" className="flex items-center gap-2 font-syne font-extrabold text-xl no-underline text-[#f0eff8]">
-            <span className="w-2 h-2 rounded-full bg-[#2AABEE] shadow-[0_0_10px_#2AABEE] animate-pulse" />
-            TG<span className="text-[#2AABEE]">Only</span>
-          </Link>
-          <div className="flex items-center gap-8">
-            <Link href="#categories" className="text-[#8888aa] text-sm font-medium hover:text-[#f0eff8] transition-colors">Explorar</Link>
-            <Link href="#trending"   className="text-[#8888aa] text-sm font-medium hover:text-[#f0eff8] transition-colors">Trending</Link>
-            <Link href="/agregar"    className="bg-[#2AABEE] text-black font-semibold text-[13px] px-4 py-2 rounded-lg hover:bg-[#1a8fd1] transition-colors">
-              + Agregar grupo
-            </Link>
-          </div>
-        </nav>
+        <Navbar />
 
-        {/* HERO - H1 con keyword principal */}
-        <section className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"
+        <section className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 pt-32 sm:pt-36 pb-16 sm:pb-20">
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[min(680px,90vw)] h-[300px] pointer-events-none"
                style={{ background: 'radial-gradient(ellipse, rgba(42,171,238,0.12) 0%, transparent 70%)' }} />
 
-          <div className="inline-flex items-center gap-2 bg-[#2AABEE]/10 border border-[#2AABEE]/25 rounded-full px-4 py-1.5 text-xs font-medium text-[#2AABEE] mb-7">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#2AABEE] animate-pulse" />
-            El directorio #1 de grupos de Telegram en español
+          <div className="relative inline-flex items-center gap-2 bg-[#2AABEE]/10 border border-[#2AABEE]/25 rounded-full px-4 py-1.5 text-xs font-medium text-[#2AABEE] mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#2AABEE]" />
+            {groups.length} comunidades disponibles
           </div>
 
-          {/* ✅ H1 con keywords naturales */}
-          <h1 className="font-syne font-extrabold text-[clamp(42px,7vw,80px)] leading-[1.05] tracking-[-2px] mb-5">
-            Grupos de Telegram<br />
-            en <em className="not-italic text-[#2AABEE]">Español</em>
+          <h1 className="relative font-syne font-extrabold text-[clamp(38px,7vw,72px)] leading-[1.03] tracking-[-2px] mb-5 max-w-4xl">
+            Encuentra lo que buscas<br />
+            <span className="text-[#2AABEE]">en Telegram</span>
           </h1>
 
-          {/* ✅ Descripción con keywords secundarias */}
-          <p className="text-lg text-[#8888aa] max-w-xl mb-11 font-light">
-            Miles de grupos verificados organizados por tema. Cripto, tech, gaming, educación y más — para toda la comunidad hispana de LATAM.
+          <p className="relative text-base sm:text-lg text-[#8888aa] max-w-2xl mb-8 font-light">
+            Busca personas, grupos, canales y comunidades en español. Revisa el contexto y abre el enlace correcto en Telegram.
           </p>
 
-          {/* SearchBar es Client Component */}
-          <SearchBar />
+          <div className="relative w-full flex justify-center mb-5">
+            <SearchBar />
+          </div>
 
-          {/* Stats */}
-          <div className="flex items-center gap-10">
-            {[['12,400+','Grupos'],['48M+','Miembros'],['38','Categorías'],['100%','Verificados']].map(([n,l], i) => (
-              <div key={l} className="flex items-center gap-10">
-                {i > 0 && <div className="w-px h-8 bg-white/[0.12]" />}
-                <div className="text-center">
-                  <span className="block font-syne font-bold text-[26px]">{n}</span>
-                  <span className="text-[11px] text-[#8888aa] uppercase tracking-widest">{l}</span>
-                </div>
-              </div>
-            ))}
+          {quickLinks.length > 0 && (
+            <div className="relative flex flex-wrap justify-center gap-2 max-w-3xl">
+              <span className="text-xs text-[#66667d] py-1.5 mr-1">Popular:</span>
+              {quickLinks.map(g => (
+                <Link key={g.name} href={`/grupos/${g.category}/${g.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`}
+                  className="text-xs text-[#aaaac0] bg-[#111118] border border-white/[0.08] rounded-full px-3 py-1.5 hover:text-[#f0eff8] hover:border-[#2AABEE]/30 transition-colors">
+                  {g.name}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          <div className="relative grid grid-cols-3 gap-6 sm:gap-12 mt-10 pt-8 border-t border-white/[0.07]">
+            <div>
+              <span className="block font-syne font-bold text-xl sm:text-2xl">{groups.length}</span>
+              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Comunidades</span>
+            </div>
+            <div>
+              <span className="block font-syne font-bold text-xl sm:text-2xl">{categories.length}</span>
+              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Categorías</span>
+            </div>
+            <div>
+              <span className="block font-syne font-bold text-xl sm:text-2xl">{totalMembers.toLocaleString('es-MX')}</span>
+              <span className="text-[10px] sm:text-[11px] text-[#77778f] uppercase tracking-wider">Miembros registrados</span>
+            </div>
           </div>
         </section>
 
         {/* CATEGORIES */}
-        <section id="categories" className="relative z-10 max-w-6xl mx-auto px-10 pb-20">
+        <section id="categories" className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pb-16 sm:pb-20">
           <div className="flex items-baseline justify-between mb-6">
-            <h2 className="font-syne font-bold text-[22px] tracking-tight">Explorar categorías de grupos</h2>
+            <h2 className="font-syne font-bold text-[22px] tracking-tight">Explorar por categoría</h2>
             <Link href="/grupos" className="text-[#2AABEE] text-[13px] font-medium hover:opacity-70 transition-opacity">Ver todas →</Link>
           </div>
           <CategoryGrid categories={categories} />
         </section>
 
         {/* TRENDING - Server rendered */}
-        <section id="trending" className="relative z-10 max-w-6xl mx-auto px-10 pb-24">
-          <h2 className="font-syne font-bold text-[22px] tracking-tight mb-6">🔥 Grupos trending ahora</h2>
+        <section id="trending" className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 pb-20 sm:pb-24">
+          <h2 className="font-syne font-bold text-[22px] tracking-tight mb-6">Tendencias ahora</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {trendingGroups.map((g) => <GroupCard key={g.name} group={g} />)}
           </div>
@@ -162,7 +168,7 @@ export default async function Home() {
         </section>
 
         {/* SEO TEXT BLOCK - Importante para long-tail */}
-        <section className="relative z-10 max-w-3xl mx-auto px-10 pb-24 text-center">
+        <section className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 pb-24 text-center">
           <h2 className="font-syne font-bold text-[20px] mb-4 text-[#f0eff8]">¿Por qué usar TGOnly?</h2>
           <p className="text-[#8888aa] leading-relaxed mb-4">
             TGOnly es el directorio más completo de <strong className="text-[#f0eff8]">grupos de Telegram en español</strong>. 
